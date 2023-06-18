@@ -1,17 +1,5 @@
 import { Injectable, WritableSignal, signal } from '@angular/core';
-
-interface Vector2 {
-  x: number;
-  y: number;
-}
-
-interface Card {
-  id: number;
-  open: boolean;
-  originalSize: Vector2;
-  imgUrl?: string;
-  color?: string;
-}
+import { Card } from '../models/models';
 
 @Injectable({ providedIn: 'root' })
 export class StoreService {
@@ -29,7 +17,7 @@ export class StoreService {
         card.push({
           id: index,
           open: false,
-          originalSize: { x: 200, y: 200 },
+          originalSize: { x: 16, y: 16 },
           color:
             '#' +
             Math.floor(Math.random() * 10) +

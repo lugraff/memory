@@ -2,7 +2,7 @@
 module.exports = {
   //darkMode: 'class',
   plugins: [require('tailwind-scrollbar')],
-  content: ["./src/**/*.{html,ts}"],
+  content: ['./src/**/*.{html,ts}'],
   theme: {
     fontSize: {
       xs: '0.8rem',
@@ -55,10 +55,9 @@ module.exports = {
           '0%': { transform: 'translateY(0%)', opacity: '1' },
           '100%': { transform: 'translateY(100%)', opacity: '0' },
         },
-        theChosenOne: {
-          '0%': { transform: 'scale(0.75)' },
-          '50%': { transform: 'scale(1)' },
-          '100%': { transform: 'scale(0.75)' },
+        flip: {
+          '0%': { transform: 'scaleX(0) scaleY(1.25)' },
+          '100%': { transform: 'scaleX(1) scaleY(1)' },
         },
         hover: {
           '0%': { transform: 'translateY(0%)' },
@@ -69,7 +68,7 @@ module.exports = {
       animation: {
         fadeIn: 'fadeIn 300ms 1',
         fadeOut: 'fadeOut 300ms 1',
-        theChosenOne: 'theChosenOne 1s ease infinite',
+        flip: 'flip 300ms 1',
         hover: 'hover 1500ms ease-in-out infinite',
         zoomIn: 'zoomIn 300ms ease 1',
         zoomOut: 'zoomOut 300ms ease 1',

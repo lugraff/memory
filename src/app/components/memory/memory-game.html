@@ -1,8 +1,7 @@
 <div class="grid justify-center items-center h-full">
-  <div class="grid gap-3 auto-rows-fr grid-cols-6 w-fit">
+  <div class="grid auto-rows-fr grid-cols-6 gap-2 w-fit">
     <ng-container *ngFor="let card of store.cards()">
-      <div [ngStyle]="{backgroundColor:card.color}" class="w-32 h-32 hover:scale-125 duration-300"></div>
-      <img ngSrc="assets/card_back_1.png" width="128" height="128">
+      <app-card [id]="card.id"></app-card>
     </ng-container>
   </div>
 </div>

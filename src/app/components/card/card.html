@@ -1,0 +1,15 @@
+<div (pointerenter)="onEnter()" (pointerdown)="onDown()" (pointerout)="onLeave()"
+  class="hover:scale-125 duration-200 select-none">
+
+  <div *ngIf="store.cards()[this.id].open;else cardClosed" [ngStyle]="{backgroundColor:store.cards()[this.id].color}"
+    class="w-16 h-16 duration-300 animate-flip"
+    [ngClass]="animCloseStarted() && store.cards()[this.id].open ? 'scale-x-0 scale-y-125' : ''">
+  </div>
+
+  <ng-template #cardClosed>
+    <div class="w-16 h-16 duration-300 animate-flip"
+      [ngStyle]="{backgroundImage: 'url(assets/card_back_1.png)',backgroundSize: '64px'}"
+      [ngClass]="animOpenStarted() && !store.cards()[this.id].open ? 'scale-x-0 scale-y-125' : ''"></div>
+  </ng-template>
+
+</div>
