@@ -4,11 +4,16 @@ import { bootstrapApplication } from '@angular/platform-browser';
 import { LimitNumber } from './app/pipes/force-min-max-pipe';
 import { Routes, provideRouter } from '@angular/router';
 import { MainComponent } from './app/components/main.component';
+import { MemoryGameComponent } from './app/components/memory-game';
 
 const ROUTES: Routes = [
   {
     path: '',
     component: MainComponent,
+  },
+  {
+    path: 'memory',
+    component: MemoryGameComponent,
   },
   {
     path: '**',
