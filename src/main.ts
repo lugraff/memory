@@ -3,8 +3,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { LimitNumber } from './app/pipes/force-min-max-pipe';
 import { Routes, provideRouter } from '@angular/router';
-import { MainComponent } from './app/components/main.component';
-import { MemoryGameComponent } from './app/components/memory-game';
+import { MainComponent } from './app/components/main/main.component';
+import { MemoryGameComponent } from './app/components/memory/memory-game';
 
 const ROUTES: Routes = [
   {

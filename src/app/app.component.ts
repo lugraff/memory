@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { StoreService } from './services/store.service';
 import { RouterModule } from '@angular/router';
 
 @Component({
@@ -18,5 +17,5 @@ import { RouterModule } from '@angular/router';
     </div>`,
 })
 export class AppComponent {
-  store = inject(StoreService);
+  
 }
