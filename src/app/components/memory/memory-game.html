@@ -1,6 +1,6 @@
-<div class="grid justify-center items-center h-full">
-  <div class="grid auto-rows-fr grid-cols-6 gap-2 w-fit">
-    <ng-container *ngFor="let card of store.cards()">
+<div class="grid w-full h-full justify-center items-center p-3">
+  <div class="flex flex-wrap gap-1 justify-center items-center w-full">
+    <ng-container *ngFor="let card of store.gameData().cards">
       <app-card [id]="card.id"></app-card>
     </ng-container>
   </div>

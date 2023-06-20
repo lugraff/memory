@@ -3,7 +3,7 @@ import { Card, Vector2 } from './models';
 const emptyCardRef: Card = {
   id: -1,
   open: false,
-  originalSize: { x: 0, y: 0 },
+  size: { x: 0, y: 0 },
 };
 export const emptyCard = JSON.parse(JSON.stringify(emptyCardRef));
 

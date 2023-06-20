@@ -1,5 +1,5 @@
 import { CommonModule, NgOptimizedImage } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { StoreService } from '../../services/store.service';
 import { CardComponent } from '../card/card';
@@ -11,6 +11,15 @@ import { CardComponent } from '../card/card';
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './memory-game.html',
 })
-export class MemoryGameComponent {
+export class MemoryGameComponent implements OnInit {
   public store = inject(StoreService);
+
+  @HostListener('contextmenu', ['$event'])
+  onRightClick(event: MouseEvent) {
+    event.preventDefault();
+  }
+
+  ngOnInit(): void {
+    this.store.generateNewGame(40, { x: innerWidth, y: innerHeight });
+  }
 }

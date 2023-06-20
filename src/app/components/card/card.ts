@@ -18,9 +18,12 @@ export class CardComponent {
   public animOpenStarted = signal(false);
   public animCloseStarted = signal(false);
 
+  public randomRotate = signal((Math.random() - 0.5) * 9);
+
   public onDown(): void {
     if (!this.animOpenStarted() && !this.animCloseStarted()) {
-      if (this.store.cards()[this.id].open) {
+      this.randomRotate.set((Math.random() - 0.5) * 9);
+      if (this.store.gameData().cards[this.id].open) {
         this.CloseAnimation();
       } else {
         this.OpenAnimation();
@@ -31,7 +34,7 @@ export class CardComponent {
   private OpenAnimation(): void {
     this.animOpenStarted.set(true);
     setTimeout(() => {
-      this.store.cards.mutate((cards) => (cards[this.id].open = true));
+      this.store.gameData.mutate((gameData) => (gameData.cards[this.id].open = true));
       setTimeout(() => {
         this.animOpenStarted.set(false);
       }, 300);
@@ -41,7 +44,7 @@ export class CardComponent {
   private CloseAnimation(): void {
     this.animCloseStarted.set(true);
     setTimeout(() => {
-      this.store.cards.mutate((cards) => (cards[this.id].open = false));
+      this.store.gameData.mutate((gameData) => (gameData.cards[this.id].open = false));
       setTimeout(() => {
         this.animCloseStarted.set(false);
       }, 300);

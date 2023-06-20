@@ -6,7 +6,15 @@ export interface Vector2 {
 export interface Card {
   id: number;
   open: boolean;
-  originalSize: Vector2;
+  size: Vector2;
   imgUrl?: string;
   color?: string;
+}
+
+export interface MemoryData {
+  status: string;
+  round: number;
+  cards: Card[];
+  player: string[];
+  startTime: Date;
 }
