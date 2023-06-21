@@ -20,6 +20,6 @@ export class MemoryGameComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.store.generateNewGame(40, { x: innerWidth, y: innerHeight });
+    this.store.generateNewGame(36, { x: innerWidth, y: innerHeight });
   }
 }

@@ -79,7 +79,7 @@ export class StoreService {
 
   private calcCardSize(cardAmount: number, boardSize: Vector2): number {
     const boardSizeQ = boardSize.x * boardSize.y;
-    for (let sidelengthCard = 64; sidelengthCard <= Math.min(boardSize.x, boardSize.y); sidelengthCard += 4) {
+    for (let sidelengthCard = 64; sidelengthCard <= Math.min(boardSize.x, boardSize.y); sidelengthCard += 8) {
       const squareArea = cardAmount * (sidelengthCard + 16) * (sidelengthCard + 16);
       if (squareArea >= boardSizeQ * 0.9) {
         return sidelengthCard;
