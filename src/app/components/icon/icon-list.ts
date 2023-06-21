@@ -15,6 +15,7 @@ import {
   octArrowSwitch,
   octArrowUp,
   octArrowUpLeft,
+  octQuestion,
 } from '@ng-icons/octicons';
 
 export const iconList = [
@@ -33,6 +34,7 @@ export const iconList = [
   'octArrowSwitch',
   'octArrowUp',
   'octArrowUpLeft',
+  'octQuestion',
 ];
 
 export const ngIconsRecord: Record<string, string> = {
@@ -51,4 +53,5 @@ export const ngIconsRecord: Record<string, string> = {
   octArrowSwitch,
   octArrowUp,
   octArrowUpLeft,
+  octQuestion,
 };

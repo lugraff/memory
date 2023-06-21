@@ -7,8 +7,12 @@
 
 @layer base {
   html {
-    -webkit-tap-highlight-color: transparent; //------fixes the touch-bg-color!
+    -webkit-tap-highlight-color: transparent; //INFO fixes the touch-bg-color!
   }
+}
+
+.header {
+  @apply font-medium text-xxxl text-primary leading-6 tracking-wide select-none whitespace-pre-wrap text-center;
 }
 
 .v-scrollbar {

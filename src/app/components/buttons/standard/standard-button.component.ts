@@ -1,15 +1,21 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostBinding, Input, OnChanges, SimpleChange, SimpleChanges } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  HostBinding,
+  Input,
+  OnChanges,
+  SimpleChange,
+  SimpleChanges,
+} from '@angular/core';
 import { IconComponent } from '../../icon/icon.component';
 
 @Component({
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, IconComponent],
   selector: 'button[standard]',
-  template: `<div
-    data-cy="buttonlist-div"
-    class="flex items-center gap-2 pl-2 text-secondary overflow-hidden">
-    <!-- [ngClass]="selectedButton ? '' : ''" -->
+  template: `<div class="flex justify-center items-center gap-2 text-secondary overflow-hidden">
     <global-icon
       *ngIf="icon.length"
       [icon]="icon"
@@ -27,7 +33,7 @@ export class StandardButtonComponent implements OnChanges {
   @Input() public iconSize = '1.5rem';
   @Input() public iconColor = '';
   private readonly baseClass =
-    'disabled:brightness-50 disabled:pointer-events-none outline-none elite-text-standard pr-2 py-1 rounded-md bg-bgB hover:border-primary border active:brightness-125 active:border-primary transition-all duration-250';
+    'disabled:brightness-50 disabled:pointer-events-none outline-none text-center rounded-md bg-bgB hover:border-primary border active:brightness-125 active:border-primary transition-all duration-250';
   private ngClass = ' border-bgB';
 
   @HostBinding('class') public class = this.baseClass + this.ngClass;

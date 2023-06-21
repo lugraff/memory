@@ -55,6 +55,6 @@ export class IconComponent implements OnChanges {
       return icon;
     }
     this.color = '#646464';
-    return 'featherHelpCircle';
+    return 'octQuestion';
   }
 }

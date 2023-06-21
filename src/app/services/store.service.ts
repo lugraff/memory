@@ -22,7 +22,11 @@ export class StoreService {
   }
 
   public generateNewGame(cardAmount: number, boardSize: Vector2): void {
-    this.gameData.mutate((data) => (data.cards = this.generateCards(cardAmount, boardSize)));
+    this.gameData.mutate((data) => {
+      data.cards = this.generateCards(cardAmount, boardSize);
+      data.startTime = new Date();
+      data.status = 'playing';
+    });
   }
 
   private generateCards(cardAmount: number, boardSize: Vector2): Card[] {

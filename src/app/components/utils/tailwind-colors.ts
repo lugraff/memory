@@ -28,7 +28,7 @@ const tailwindColors: TailwindColors = {
   ],
 };
 
-export function getTailwindColorHexCode(colorName: string | undefined | null) {
+export function getTailwindColorHexCode(colorName: string | undefined | null): string {
   if (colorName !== undefined && colorName !== null) {
     if (colorName.startsWith('#')) {
       return colorName;
