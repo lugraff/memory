@@ -50,7 +50,6 @@ export class StoreService {
     const borderSpace = 20;
     const sidelengthCard = this.calcCardSize(cardAmount, boardSize, borderSpace);
     const positions: Vector2[] = this.calcPositions(cardAmount, sidelengthCard, boardSize, borderSpace);
-    console.log(positions);
     for (let index = 0; index < cardAmount; index += 2) {
       const randomChip = Math.floor(Math.random() * 8);
       const randomColor =

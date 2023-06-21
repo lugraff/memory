@@ -14,6 +14,7 @@ export class CardComponent {
   public store = inject(StoreService);
 
   @HostBinding('class') public class = 'relative';
+  //TODO Hostlistener PointerUp bei onDown()
 
   @Input() public id = -1;
 
