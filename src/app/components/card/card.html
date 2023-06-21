@@ -1,5 +1,5 @@
 <div *ngIf="store.gameData().cards[this.id] as card" (pointerenter)="onEnter()" (pointerdown)="onDown()"
-  (pointerout)="onLeave()" class="absolute hover:scale-110 hover:!z-[9999] duration-200 select-none"
+  (pointerout)="onLeave()" [style.transform]="'scale(' + activeScale() + ',' + activeScale() + ')'" class="absolute duration-200 select-none"
   [ngStyle]="{rotate:randomRotate()+'deg', left:card.position.x+'px', top:card.position.y+'px', zIndex:card.zIndex}">
 
   <div *ngIf="card.open;else cardClosed" [ngStyle]="{

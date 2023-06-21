@@ -21,16 +21,17 @@ export class CardComponent {
   public animCloseStarted = signal(false);
 
   public randomRotate = signal((Math.random() - 0.5) * 9);
+  public activeScale = signal(1);
 
   public onDown(): void {
     this.store.gameData.mutate((state) => {
       state.cards[this.id].zIndex = state.lastZ++;
+      this.activeScale.set(1.1);
     });
-    // this.zIndex.update((number) => number++);
     if (!this.animOpenStarted() && !this.animCloseStarted()) {
       this.randomRotate.set((Math.random() - 0.5) * 9);
       if (this.store.gameData().cards[this.id].open) {
-        this.CloseAnimation();
+        // this.CloseAnimation();
       } else {
         this.OpenAnimation();
       }
@@ -60,6 +61,7 @@ export class CardComponent {
   public onEnter(): void {}
 
   public onLeave(): void {
+    this.activeScale.set(1);
     // this.card.open = false;
   }
 }
