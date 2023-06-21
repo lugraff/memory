@@ -5,7 +5,7 @@
 <summary>Konsolen-Befehle</summary>
   > "ng serve" um zu hosten.<br>
   > "ng graph" um Diagramm anzuzeigen.<br>
-  > "ng build um zu builden dann in index.html href einfügen: href="https://lugraff.github.io/lucreativ/"<br>
+  > "ng build um zu builden dann in index.html href einfügen: href="https://lugraff.github.io/memory/"<br>
   > "ng component-test "lib oder app"" um zu testen.<br>
   > "ng component-test "lib oder app" --watch" um mit GUI zu testen<br>
   > "npm outdated" um veraltete Versionen anzuzeigen.<br>
