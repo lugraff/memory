@@ -5,23 +5,22 @@ import { IconComponent } from '../../icon/icon.component';
 @Component({
   standalone: true,
   imports: [CommonModule, IconComponent],
-  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'button[standard]',
   template: `<div
     data-cy="buttonlist-div"
     class="flex items-center gap-2 pl-2 text-secondary overflow-hidden">
     <!-- [ngClass]="selectedButton ? '' : ''" -->
-    <!-- <global-icon
+    <global-icon
       *ngIf="icon.length"
       [icon]="icon"
       [strokeWidth]="iconStroke"
       [size]="iconSize"
       [color]="iconColor">
-    </global-icon> -->
+    </global-icon>
     <ng-content></ng-content>
   </div>`,
 })
-export class ListButtonComponent implements OnChanges {
+export class StandardButtonComponent implements OnChanges {
   @Input() public selectedButton = false;
   @Input() public icon = '';
   @Input() public iconStroke: string | number | undefined = 1.5;
