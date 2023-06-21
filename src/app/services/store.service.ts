@@ -1,10 +1,18 @@
 import { Injectable, signal } from '@angular/core';
-import { Card, MemoryData, Vector2 } from '../models/models';
+import { Card, MemoryData, Player, Vector2 } from '../models/models';
 
 @Injectable({ providedIn: 'root' })
 export class StoreService {
   private isPlaying = signal(false);
-  public gameData = signal<MemoryData>({ cards: [], player: [], round: 0, startTime: new Date(), status: 'menu' });
+  public gameData = signal<MemoryData>({
+    cards: [],
+    player: [],
+    round: 0,
+    startTime: new Date(),
+    status: 'menu',
+    actualPlayerId: 0,
+    lastZ: 1,
+  });
   private chipsNames = [
     'deer.png',
     'dolphin.png',
@@ -26,7 +34,12 @@ export class StoreService {
       data.cards = this.generateCards(cardAmount, boardSize);
       data.startTime = new Date();
       data.status = 'playing';
+      data.round = 1;
     });
+  }
+
+  private generatePlayer(playerAmount: number): Player[] {
+    return [];
   }
 
   private generateCards(cardAmount: number, boardSize: Vector2): Card[] {
@@ -34,6 +47,8 @@ export class StoreService {
       cardAmount--;
     }
     const newCards: Card[] = [];
+    const borderSpace = 20;
+    let pos: Vector2 = { x: borderSpace, y: borderSpace };
     for (let index = 0; index < cardAmount; index += 2) {
       const randomChip = Math.floor(Math.random() * 8);
       const randomColor =
@@ -44,12 +59,14 @@ export class StoreService {
         Math.floor(Math.random() * 10) +
         Math.floor(Math.random() * 10) +
         Math.floor(Math.random() * 10);
-      const cardSize = this.calcCardSize(cardAmount, boardSize);
+      const cardSize = this.calcCardSize(cardAmount, boardSize, borderSpace);
       newCards.push(
         {
           id: index,
           open: false,
           size: { x: cardSize, y: cardSize },
+          position: { x: pos.x, y: pos.y },
+          zIndex: 1,
           color: randomColor,
           imgUrl: 'url(assets/' + this.chipsNames[randomChip] + ')',
         },
@@ -57,10 +74,17 @@ export class StoreService {
           id: index + 1,
           open: false,
           size: { x: cardSize, y: cardSize },
+          position: { x: pos.x + cardSize, y: pos.y },
+          zIndex: 1,
           color: randomColor,
           imgUrl: 'url(assets/' + this.chipsNames[randomChip] + ')',
         }
       );
+      pos.x += cardSize * 2;
+      if (pos.x >= boardSize.x - cardSize * 2) {
+        pos.y += cardSize;
+        pos.x = borderSpace;
+      }
     }
     this.shuffleArray(newCards);
     return newCards;
@@ -81,11 +105,11 @@ export class StoreService {
     return array;
   }
 
-  private calcCardSize(cardAmount: number, boardSize: Vector2): number {
+  private calcCardSize(cardAmount: number, boardSize: Vector2, borderSpace: number): number {
     const boardSizeQ = boardSize.x * boardSize.y;
-    for (let sidelengthCard = 64; sidelengthCard <= Math.min(boardSize.x, boardSize.y); sidelengthCard += 8) {
+    for (let sidelengthCard = 64; sidelengthCard <= Math.min(boardSize.x-borderSpace, boardSize.y-borderSpace); sidelengthCard += 8) {
       const squareArea = cardAmount * (sidelengthCard + 16) * (sidelengthCard + 16);
-      if (squareArea >= boardSizeQ * 0.9) {
+      if (squareArea >= boardSizeQ * 0.8) {
         return sidelengthCard;
       }
     }

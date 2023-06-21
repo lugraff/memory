@@ -1,26 +1,24 @@
-<div *ngIf="store.gameData() as gD" class="grid w-full h-full justify-center items-center p-3">
-  <div class="flex flex-wrap gap-1 justify-center items-center w-full">
+<ng-container *ngIf="store.gameData() as gD">
 
-    <ng-container *ngIf="gD.status === 'playing'">
-      <ng-container *ngFor="let card of gD.cards">
-        <app-card [id]="card.id"></app-card>
-      </ng-container>
-    </ng-container>
-
-    <ng-container *ngIf="gD.status === 'menu'">
-      <div class="grid grid-flow-row gap-2">
-        <div class="header p-3">Memory</div>
-        <hr>
-        <global-input-number inputType="number" inputFieldWidth="3rem" [disabled]="true" [step]="2" [max]="1000" [min]="4"
-          [(ngModel)]="inputCardCount">Karten:</global-input-number>
-        <global-input-number inputType="number" inputFieldWidth="3rem" [disabled]="true" [step]="1" [max]="4" [min]="1"
-          [(ngModel)]="inputPlayerCount">Spieler:</global-input-number>
-        <global-input-number inputType="number" inputFieldWidth="3rem" [disabled]="true" [step]="1" [max]="4" [min]="0" [(ngModel)]="inputNPCCount">KI
-          Spieler:</global-input-number>
-        <hr>
-        <button standard (click)="onStartGame()">Spiel starten</button>
-      </div>
-    </ng-container>
-
+  <div *ngIf="gD.status === 'menu'" class="grid w-full h-full justify-center items-center p-3">
+    <div class="grid grid-flow-row gap-2">
+      <div class="header p-3">Memory</div>
+      <hr>
+      <global-input-number inputType="number" inputFieldWidth="3rem" [disabled]="true" [step]="2" [max]="1000" [min]="4"
+        [(ngModel)]="inputCardCount">Karten:</global-input-number>
+      <global-input-number inputType="number" inputFieldWidth="3rem" [disabled]="true" [step]="1" [max]="4" [min]="1"
+        [(ngModel)]="inputPlayerCount">Spieler:</global-input-number>
+      <global-input-number inputType="number" inputFieldWidth="3rem" [disabled]="true" [step]="1" [max]="4" [min]="0"
+        [(ngModel)]="inputNPCCount">KI
+        Spieler:</global-input-number>
+      <hr>
+      <button standard (click)="onStartGame()">Spiel starten</button>
+    </div>
   </div>
-</div>
+
+  <ng-container *ngIf="gD.status === 'playing'">
+    <ng-container *ngFor="let card of gD.cards">
+      <app-card [id]="card.id"></app-card>
+    </ng-container>
+  </ng-container>
+</ng-container>

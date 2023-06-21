@@ -1,5 +1,6 @@
 <div *ngIf="store.gameData().cards[this.id] as card" (pointerenter)="onEnter()" (pointerdown)="onDown()"
-  (pointerout)="onLeave()" class="hover:scale-110 duration-200 select-none" [ngStyle]="{rotate:randomRotate()+'deg'}">
+  (pointerout)="onLeave()" class="absolute hover:scale-110 hover:!z-[9999] duration-200 select-none"
+  [ngStyle]="{rotate:randomRotate()+'deg', left:card.position.x+'px', top:card.position.y+'px', zIndex:card.zIndex}">
 
   <div *ngIf="card.open;else cardClosed" [ngStyle]="{
       backgroundColor:card.color, 
@@ -21,5 +22,4 @@
         height: card.size.y+'px'}" [ngClass]="animOpenStarted() && !card.open ? 'scale-x-0 scale-y-125' : ''">
     </div>
   </ng-template>
-
 </div>
