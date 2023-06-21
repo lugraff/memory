@@ -48,7 +48,9 @@ export class StoreService {
     }
     const newCards: Card[] = [];
     const borderSpace = 20;
-    let pos: Vector2 = { x: borderSpace, y: borderSpace };
+    const sidelengthCard = this.calcCardSize(cardAmount, boardSize, borderSpace);
+    const positions: Vector2[] = this.calcPositions(cardAmount, sidelengthCard, boardSize, borderSpace);
+    console.log(positions);
     for (let index = 0; index < cardAmount; index += 2) {
       const randomChip = Math.floor(Math.random() * 8);
       const randomColor =
@@ -59,13 +61,12 @@ export class StoreService {
         Math.floor(Math.random() * 10) +
         Math.floor(Math.random() * 10) +
         Math.floor(Math.random() * 10);
-      const cardSize = this.calcCardSize(cardAmount, boardSize, borderSpace);
       newCards.push(
         {
           id: index,
           open: false,
-          size: { x: cardSize, y: cardSize },
-          position: { x: pos.x, y: pos.y },
+          size: { x: sidelengthCard, y: sidelengthCard },
+          position: { x: positions[positions.length - 1].x, y: positions[positions.length - 1].y },
           zIndex: 1,
           color: randomColor,
           imgUrl: 'url(assets/' + this.chipsNames[randomChip] + ')',
@@ -73,24 +74,20 @@ export class StoreService {
         {
           id: index + 1,
           open: false,
-          size: { x: cardSize, y: cardSize },
-          position: { x: pos.x + cardSize, y: pos.y },
+          size: { x: sidelengthCard, y: sidelengthCard },
+          position: { x: positions[positions.length - 2].x, y: positions[positions.length - 2].y },
           zIndex: 1,
           color: randomColor,
           imgUrl: 'url(assets/' + this.chipsNames[randomChip] + ')',
         }
       );
-      pos.x += cardSize * 2;
-      if (pos.x >= boardSize.x - cardSize * 2) {
-        pos.y += cardSize;
-        pos.x = borderSpace;
-      }
+      positions.pop();
+      positions.pop();
     }
-    this.shuffleArray(newCards);
     return newCards;
   }
 
-  private shuffleArray(array: Card[]) {
+  private shuffleArray(array: any[]): any[] {
     let m = array.length,
       t,
       i;
@@ -107,12 +104,37 @@ export class StoreService {
 
   private calcCardSize(cardAmount: number, boardSize: Vector2, borderSpace: number): number {
     const boardSizeQ = boardSize.x * boardSize.y;
-    for (let sidelengthCard = 64; sidelengthCard <= Math.min(boardSize.x-borderSpace, boardSize.y-borderSpace); sidelengthCard += 8) {
+    for (
+      let sidelengthCard = 64;
+      sidelengthCard <= Math.min(boardSize.x - borderSpace, boardSize.y - borderSpace);
+      sidelengthCard += 8
+    ) {
       const squareArea = cardAmount * (sidelengthCard + 16) * (sidelengthCard + 16);
       if (squareArea >= boardSizeQ * 0.8) {
         return sidelengthCard;
       }
     }
     return 64;
+  }
+
+  private calcPositions(
+    cardAmount: number,
+    sidelengthCard: number,
+    boardSize: Vector2,
+    borderSpace: number
+  ): Vector2[] {
+    const positions: Vector2[] = [];
+    let newX = borderSpace;
+    let newY = borderSpace;
+    for (let index = 0; index < cardAmount; index++) {
+      positions.push({ x: newX, y: newY });
+      newX += sidelengthCard;
+      if (newX >= boardSize.x - sidelengthCard) {
+        newY += sidelengthCard;
+        newX = borderSpace;
+      }
+    }
+    const shuffledPositions = this.shuffleArray(positions);
+    return shuffledPositions;
   }
 }
