@@ -33,7 +33,7 @@ export class StandardButtonComponent implements OnChanges {
   @Input() public iconSize = '1.5rem';
   @Input() public iconColor = '';
   private readonly baseClass =
-    'disabled:brightness-50 disabled:pointer-events-none outline-none text-center rounded-md bg-bgB hover:border-primary border active:brightness-125 active:border-primary transition-all duration-250';
+    'select-none disabled:brightness-50 disabled:pointer-events-none outline-none text-center rounded-md bg-bgB hover:border-primary border active:brightness-125 active:border-primary transition-all duration-250';
   private ngClass = ' border-bgB';
 
   @HostBinding('class') public class = this.baseClass + this.ngClass;

@@ -2,7 +2,7 @@ import { Injectable, signal } from '@angular/core';
 import { Card, MemoryData, Player, Vector2 } from '../models/models';
 
 @Injectable({ providedIn: 'root' })
-export class StoreService {
+export class MemoryStore {
   private isPlaying = signal(false);
   public gameData = signal<MemoryData>({
     cards: [],
@@ -115,7 +115,6 @@ export class StoreService {
     }
     return 64;
   }
-  
 
   private calcPositions(
     cardAmount: number,

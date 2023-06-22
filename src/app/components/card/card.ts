@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, HostBinding, Input, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { StoreService } from 'src/app/services/store.service';
+import { MemoryStore } from 'src/app/stores/memory-store';
 
 @Component({
   selector: 'app-card',
@@ -11,7 +11,7 @@ import { StoreService } from 'src/app/services/store.service';
   templateUrl: './card.html',
 })
 export class CardComponent {
-  public store = inject(StoreService);
+  public store = inject(MemoryStore);
 
   @HostBinding('class') public class = 'relative';
   //TODO Hostlistener PointerUp bei onDown()
