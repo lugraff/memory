@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChange, SimpleChanges } from '@angular/core';
 import { NgIconComponent, provideIcons } from '@ng-icons/core';
 import { ngIconsRecord, iconList } from './icon-list';
-import { getTailwindColorHexCode } from '../utils/tailwind-colors';
+import { getTailwindColorHexCode } from '../../utils/tailwind-colors';
 
 @Component({
   standalone: true,

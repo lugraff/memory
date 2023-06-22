@@ -109,12 +109,13 @@ export class StoreService {
       sidelengthCard += 8
     ) {
       const squareArea = cardAmount * (sidelengthCard + 16) * (sidelengthCard + 16);
-      if (squareArea >= boardSizeQ * 0.8) {
+      if (squareArea >= boardSizeQ * 0.8 || sidelengthCard >= 192) {
         return sidelengthCard;
       }
     }
     return 64;
   }
+  
 
   private calcPositions(
     cardAmount: number,

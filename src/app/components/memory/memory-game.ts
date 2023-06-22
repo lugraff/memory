@@ -5,6 +5,7 @@ import { StoreService } from '../../services/store.service';
 import { CardComponent } from '../card/card';
 import { StandardButtonComponent } from '../buttons/standard/standard-button.component';
 import { InputNumberComponent } from '../input-number/input-number.component';
+import { setFullscreen } from 'src/app/utils/screen-settings';
 
 @Component({
   selector: 'app-memory-game',
@@ -24,10 +25,22 @@ export class MemoryGameComponent implements OnInit {
   onRightClick(event: MouseEvent) {
     event.preventDefault();
   }
+  @HostListener('window:keydown', ['$event'])
+  onKeyDown(event: KeyboardEvent) {
+    console.log(event.code);
+    switch (event.code) {
+      case 'KeyF':
+        setFullscreen();
+        break;
+      default:
+        break;
+    }
+  }
 
   ngOnInit(): void {}
 
   onStartGame() {
     this.store.generateNewGame(this.inputCardCount, { x: innerWidth, y: innerHeight });
+    setFullscreen();
   }
 }
