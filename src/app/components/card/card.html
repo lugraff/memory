@@ -1,6 +1,8 @@
-<div *ngIf="store.gameData().cards[this.id] as card" (pointerenter)="onEnter()" (pointerdown)="onDown()"
-  (pointerout)="onLeave()" [style.transform]="'scale(' + activeScale() + ',' + activeScale() + ')'" class="absolute duration-200 select-none"
-  [ngStyle]="{rotate:randomRotate()+'deg', left:card.position.x+'px', top:card.position.y+'px', zIndex:card.zIndex}">
+<div *ngIf="store.gameData().cards[this.id] as card" (pointerenter)="onEnter()" (pointerdown)="onDown($event)"
+  (pointerup)="onUp($event)" (pointerleave)="onLeave()"
+  [style.transform]="'scale(' + activeScale() + ',' + activeScale() + ')'" [ngClass]="moving()?'':'duration-200'"
+  [ngStyle]="{rotate:randomRotate()+'deg', left:card.position.x+'px', top:card.position.y+'px', zIndex:card.zIndex}"
+  class="absolute select-none">
 
   <div *ngIf="card.open;else cardClosed" [ngStyle]="{
       backgroundColor:card.color, 

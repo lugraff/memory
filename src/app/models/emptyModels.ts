@@ -4,6 +4,8 @@ const emptyCardRef: Card = {
   id: -1,
   open: false,
   size: { x: 0, y: 0 },
+  position: { x: 0, y: 0 },
+  zIndex: 1,
 };
 export const emptyCard = JSON.parse(JSON.stringify(emptyCardRef));
 

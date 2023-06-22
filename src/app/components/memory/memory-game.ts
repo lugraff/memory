@@ -18,7 +18,6 @@ import { ReplaySubject, takeUntil } from 'rxjs';
 })
 export class MemoryGameComponent implements OnInit, OnDestroy {
   public store = inject(MemoryStore);
-  private pointerEvents = inject(PointerEventService);
   private destroy$ = new ReplaySubject<boolean>(1);
 
   public inputCardCount = 18;
@@ -42,14 +41,12 @@ export class MemoryGameComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.pointerEvents.mouseDown$.pipe(takeUntil(this.destroy$)).subscribe((newEvent) => {
-      console.log(newEvent);
-    });
+    
   }
 
   onStartGame() {
     this.store.generateNewGame(this.inputCardCount, { x: innerWidth, y: innerHeight });
-    setFullscreen();
+    // setFullscreen();
   }
 
   ngOnDestroy(): void {
