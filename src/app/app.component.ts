@@ -6,8 +6,10 @@ import { RouterModule } from '@angular/router';
   imports: [RouterModule],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<div class="w-screen h-screen bg-bgA flex text-textA selection:bg-selection">
-      <div class="grow overflow-hidden"><router-outlet></router-outlet></div>
+  template: `<div class="w-screen h-screen bg-bgA flex text-textA selection:bg-selection scrollbar">
+      <div class="grow scrollbar">
+        <router-outlet></router-outlet>
+      </div>
     </div>
 
     <!-- Unterer Bereich ist für Preload animation:
@@ -16,6 +18,4 @@ import { RouterModule } from '@angular/router';
       <div class="animate-slideIn animate-slideOut animate-zoomIn animate-zoomOut animate-fadeIn animate-fadeOut"></div>
     </div>`,
 })
-export class AppComponent {
-  
-}
+export class AppComponent {}

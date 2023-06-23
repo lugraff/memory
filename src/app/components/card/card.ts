@@ -45,6 +45,18 @@ export class CardComponent {
     }
   }
 
+  public onDoubleClick() {
+    this.activeScale.set(1);
+    if (!this.animOpenStarted() && !this.animCloseStarted()) {
+      this.randomRotate.set((Math.random() - 0.5) * 9);
+      if (this.store.cardsS()[this.id].open) {
+        this.CloseAnimation();
+      } else {
+        // this.OpenAnimation();
+      }
+    }
+  }
+
   public onLeave(): void {
     this.activeScale.set(1);
   }

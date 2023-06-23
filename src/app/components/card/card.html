@@ -1,5 +1,5 @@
 <div *ngIf="store.state().cards[this.id] as card" (pointerenter)="onEnter()" (pointerdown)="onDown($event)"
-  (pointerup)="onUp($event)" (pointerleave)="onLeave()"
+  (pointerup)="onUp($event)" (pointerleave)="onLeave()" (dblclick)="onDoubleClick()"
   [style.transform]="'scale(' + activeScale() + ',' + activeScale() + ')'" [ngClass]="moving()?'':'duration-200'"
   [ngStyle]="{rotate:randomRotate()+'deg', left:card.position.x+'px', top:card.position.y+'px', zIndex:card.zIndex}"
   class="absolute select-none transform-gpu">
