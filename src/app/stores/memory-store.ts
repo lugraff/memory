@@ -1,9 +1,9 @@
 import { Injectable, signal } from '@angular/core';
 import { ComponentStore } from '@ngrx/component-store';
 import { Card, GameSettings, Player, Vector2 } from '../models/models';
+import { shuffleArray } from '../utils/helper-functions';
 
 interface MemoryState {
-  isPlaying: boolean;
   status: string;
   round: number;
   cards: Card[];
@@ -29,7 +29,6 @@ export class MemoryStore extends ComponentStore<MemoryState> {
 
   constructor() {
     super({
-      isPlaying: false,
       cards: [],
       player: [],
       round: 0,
@@ -39,13 +38,6 @@ export class MemoryStore extends ComponentStore<MemoryState> {
       lastZ: 1,
     });
   }
-
-  public isPlayingS = this.selectSignal((state) => {
-    return state.isPlaying;
-  });
-  public setPlaying = this.updater((state, isPlaying: boolean) => {
-    return { ...state, isPlaying };
-  });
 
   public setCardIndex = this.updater((state, cardId: number) => {
     const cards = state.cards;
@@ -68,8 +60,8 @@ export class MemoryStore extends ComponentStore<MemoryState> {
     return state.cards;
   });
 
-  public stateS = this.selectSignal((state) => {
-    return state;
+  public statusS = this.selectSignal((state) => {
+    return state.status;
   });
 
   public generateNewGame = this.updater((state, gameSettings: GameSettings) => {
@@ -128,20 +120,7 @@ export class MemoryStore extends ComponentStore<MemoryState> {
     return newCards;
   }
 
-  private shuffleArray(array: any[]): any[] {
-    let m = array.length,
-      t,
-      i;
-
-    while (m) {
-      i = Math.floor(Math.random() * m--);
-      t = array[m];
-      array[m] = array[i];
-      array[i] = t;
-    }
-
-    return array;
-  }
+  
 
   private calcCardSize(cardAmount: number, boardSize: Vector2, borderSpace: number): number {
     const boardSizeQ = boardSize.x * boardSize.y;
@@ -175,7 +154,7 @@ export class MemoryStore extends ComponentStore<MemoryState> {
         newX = borderSpace;
       }
     }
-    const shuffledPositions = this.shuffleArray(positions);
+    const shuffledPositions = shuffleArray(positions);
     return shuffledPositions;
   }
 }

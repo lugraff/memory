@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Subscription, debounceTime, flatMap, switchMap } from 'rxjs';
 import { emptyVector2 } from 'src/app/models/emptyModels';
 import { Vector2 } from 'src/app/models/models';
+import { LimitNumber } from 'src/app/pipes/limit-number.pipe';
 import { PointerEventService } from 'src/app/services/pointer-events-service';
 import { MemoryStore } from 'src/app/stores/memory-store';
 
@@ -17,8 +18,8 @@ import { MemoryStore } from 'src/app/stores/memory-store';
 export class CardComponent {
   public store = inject(MemoryStore);
   private pointerEvents = inject(PointerEventService);
+  private limit = inject(LimitNumber);
 
-  @HostBinding('class') public class = 'relative';
   @Input() public id = -1;
 
   private subs: Subscription[] = [];
@@ -29,8 +30,6 @@ export class CardComponent {
   public activeScale = signal(1);
   public moving = signal(false);
   public moveOffset = signal<Vector2>(emptyVector2);
-
-  private lastTime = 0;
 
   public onDown(event: PointerEvent): void {
     this.store.setCardIndex(this.id);
@@ -97,43 +96,20 @@ export class CardComponent {
   }
 
   public onMove(event: MouseEvent | undefined): void {
-    const newTime = new Date().getTime();
-    console.log(newTime - this.lastTime);
-    this.lastTime = newTime;
     if (!this.moving() || event === undefined) {
       return;
     }
-    const newPosition: Vector2 = {
-      x: this.WithinX(event.clientX - this.moveOffset().x, this.store.cardsS()[this.id].size.x),
-      y: this.WithinY(event.clientY - this.moveOffset().y, this.store.cardsS()[this.id].size.y),
-    };
-    this.store.setCardPosition({ cardId: this.id, newPosition: newPosition });
-  }
-
-  private WithinX(popupPositionX: number, popupWidth: number): number {
-    if (popupPositionX < 0) {
-      popupPositionX = 0;
-    } else if (popupPositionX > window.innerWidth - popupWidth) {
-      popupPositionX = window.innerWidth - popupWidth;
-    }
-    return popupPositionX;
-  }
-
-  private WithinY(popupPositionY: number, popupHeight: number): number {
-    if (popupPositionY < 0) {
-      popupPositionY = 0;
-    } else if (popupPositionY > window.innerHeight - popupHeight) {
-      popupPositionY = window.innerHeight - popupHeight;
-    }
-    return popupPositionY;
+    let newX = event.clientX - this.moveOffset().x;
+    let newY = event.clientY - this.moveOffset().y;
+    newX = this.limit.transform(newX, 0, window.innerWidth - this.store.cardsS()[this.id].size.x);
+    newY = this.limit.transform(newY, 0, window.innerHeight - this.store.cardsS()[this.id].size.y);
+    this.store.setCardPosition({ cardId: this.id, newPosition: { x: newX, y: newY } });
   }
 
   public onEnd(): void {
     window.getSelection()?.removeAllRanges();
     this.moving.set(false);
     this.activeScale.set(1);
-    // this.moveIntoViewX();
-    // this.moveIntoViewY();
     this.subs.forEach((sub) => {
       sub.unsubscribe();
     });
