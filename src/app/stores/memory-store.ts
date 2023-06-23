@@ -6,6 +6,7 @@ import { shuffleArray } from '../utils/helper-functions';
 interface MemoryState {
   status: string;
   round: number;
+  lastOpenedCardIds: number[];
   cards: Card[];
   player: Player[];
   actualPlayerId: number;
@@ -32,6 +33,7 @@ export class MemoryStore extends ComponentStore<MemoryState> {
       cards: [],
       player: [],
       round: 0,
+      lastOpenedCardIds: [],
       startTime: new Date(),
       status: 'menu',
       actualPlayerId: 0,
@@ -44,10 +46,10 @@ export class MemoryStore extends ComponentStore<MemoryState> {
     cards[cardId].zIndex = state.lastZ;
     return { ...state, cards: cards, lastZ: state.lastZ + 1 };
   });
-  public setCardOpenOrClosed = this.updater((state, prop: { cardId: number; OpenOrClosed: boolean }) => {
+  public setCardOpenOrClosed = this.updater((state, prop: { cardId: number; openOrClosed: boolean }) => {
     const cards = state.cards;
     cards[prop.cardId].zIndex = state.lastZ;
-    cards[prop.cardId].open = prop.OpenOrClosed;
+    cards[prop.cardId].open = prop.openOrClosed;
     return { ...state, cards: cards, lastZ: state.lastZ + 1 };
   });
   public setCardPosition = this.updater((state, prop: { cardId: number; newPosition: Vector2 }) => {
@@ -56,12 +58,25 @@ export class MemoryStore extends ComponentStore<MemoryState> {
     return { ...state, cards: cards };
   });
 
+  public addlastOpenedCardIds = this.updater((state, cardId: number) => {
+    const lastOpenedCardIds = state.lastOpenedCardIds;
+    lastOpenedCardIds.push(cardId);
+    return { ...state, lastOpenedCardIds: lastOpenedCardIds };
+  });
+  public resetlastOpenedCardIds = this.updater((state) => {
+    return { ...state, lastOpenedCardIds: [] };
+  });
+
   public cardsS = this.selectSignal((state) => {
     return state.cards;
   });
 
   public statusS = this.selectSignal((state) => {
     return state.status;
+  });
+
+  public lastOpenedCardIdsS = this.selectSignal((state) => {
+    return state.lastOpenedCardIds;
   });
 
   public generateNewGame = this.updater((state, gameSettings: GameSettings) => {
