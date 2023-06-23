@@ -36,12 +36,7 @@ export class CardComponent {
     this.activeScale.set(1.1);
     if (!this.animOpenStarted() && !this.animCloseStarted()) {
       this.randomRotate.set((Math.random() - 0.5) * 9);
-      if (this.store.cardsS()[this.id].open) {
-        // this.CloseAnimation();
-        this.onStartMove(event);
-      } else {
-        //
-      }
+      this.onStartMove(event);
     }
   }
 
@@ -52,7 +47,7 @@ export class CardComponent {
       if (this.store.cardsS()[this.id].open) {
         this.CloseAnimation();
       } else {
-        // this.OpenAnimation();
+        this.OpenAnimation();
       }
     }
   }
@@ -61,28 +56,21 @@ export class CardComponent {
     this.activeScale.set(1);
   }
 
-  public onUp(event: PointerEvent): void {
-    if (this.activeScale() === 1) {
-      return;
-    }
-    this.activeScale.set(1);
-    if (!this.animOpenStarted() && !this.animCloseStarted()) {
-      this.randomRotate.set((Math.random() - 0.5) * 9);
-      if (this.store.cardsS()[this.id].open) {
-        // this.CloseAnimation();
-        // this.onStartMove(event);
-      } else {
-        this.OpenAnimation();
-      }
-    }
-  }
-
   private OpenAnimation(): void {
     this.animOpenStarted.set(true);
     setTimeout(() => {
       this.store.setCardOpenOrClosed({ cardId: this.id, OpenOrClosed: true });
       setTimeout(() => {
         this.animOpenStarted.set(false);
+        if (this.id % 2 !== 0) {
+          if (this.store.cardsS()[this.id - 1].open === true) {
+            this.store.setCardPosition({ cardId: this.id, newPosition: this.store.cardsS()[this.id - 1].position });
+          }
+        } else {
+          if (this.store.cardsS()[this.id + 1].open === true) {
+            this.store.setCardPosition({ cardId: this.id, newPosition: this.store.cardsS()[this.id + 1].position });
+          }
+        }
       }, 300);
     }, 300);
   }
@@ -126,6 +114,4 @@ export class CardComponent {
       sub.unsubscribe();
     });
   }
-
-  public onEnter(): void {}
 }

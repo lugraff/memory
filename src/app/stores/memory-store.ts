@@ -120,8 +120,6 @@ export class MemoryStore extends ComponentStore<MemoryState> {
     return newCards;
   }
 
-  
-
   private calcCardSize(cardAmount: number, boardSize: Vector2, borderSpace: number): number {
     const boardSizeQ = boardSize.x * boardSize.y;
     for (
@@ -154,7 +152,7 @@ export class MemoryStore extends ComponentStore<MemoryState> {
         newX = borderSpace;
       }
     }
-    const shuffledPositions = shuffleArray(positions);
-    return shuffledPositions;
+    shuffleArray(positions);
+    return positions;
   }
 }

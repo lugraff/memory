@@ -9,7 +9,7 @@ import { MemoryGameComponent } from './app/components/memory/memory-game';
 const ROUTES: Routes = [
   {
     path: '',
-    component: MainComponent,
+    component: MemoryGameComponent,
   },
   {
     path: 'memory',
