@@ -1,19 +1,21 @@
 import { Injectable, signal } from '@angular/core';
-import { Card, MemoryData, Player, Vector2 } from '../models/models';
+import { ComponentStore } from '@ngrx/component-store';
+import { Card, GameSettings, Player, Vector2 } from '../models/models';
 
-@Injectable({ providedIn: 'root' })
-export class MemoryStore {
-  private isPlaying = signal(false);
-  public gameData = signal<MemoryData>({
-    cards: [],
-    player: [],
-    round: 0,
-    startTime: new Date(),
-    status: 'menu',
-    actualPlayerId: 0,
-    lastZ: 1,
-  });
-  private chipsNames = [
+interface MemoryState {
+  isPlaying: boolean;
+  status: string;
+  round: number;
+  cards: Card[];
+  player: Player[];
+  actualPlayerId: number;
+  startTime: Date;
+  lastZ: number;
+}
+
+@Injectable()
+export class MemoryStore extends ComponentStore<MemoryState> {
+  private readonly chipsNames = [
     'deer.png',
     'dolphin.png',
     'eagle.png',
@@ -25,18 +27,58 @@ export class MemoryStore {
     'turtle.png',
   ];
 
-  public setIsPlaying(value: boolean): void {
-    this.isPlaying.set(value);
-  }
-
-  public generateNewGame(cardAmount: number, boardSize: Vector2): void {
-    this.gameData.mutate((data) => {
-      data.cards = this.generateCards(cardAmount, boardSize);
-      data.startTime = new Date();
-      data.status = 'playing';
-      data.round = 1;
+  constructor() {
+    super({
+      isPlaying: false,
+      cards: [],
+      player: [],
+      round: 0,
+      startTime: new Date(),
+      status: 'menu',
+      actualPlayerId: 0,
+      lastZ: 1,
     });
   }
+
+  public isPlayingS = this.selectSignal((state) => {
+    return state.isPlaying;
+  });
+  public setPlaying = this.updater((state, isPlaying: boolean) => {
+    return { ...state, isPlaying };
+  });
+
+  public setCardIndex = this.updater((state, cardId: number) => {
+    const cards = state.cards;
+    cards[cardId].zIndex = state.lastZ;
+    return { ...state, cards: cards, lastZ: state.lastZ + 1 };
+  });
+  public setCardOpenOrClosed = this.updater((state, prop: { cardId: number; OpenOrClosed: boolean }) => {
+    const cards = state.cards;
+    cards[prop.cardId].zIndex = state.lastZ;
+    cards[prop.cardId].open = prop.OpenOrClosed;
+    return { ...state, cards: cards, lastZ: state.lastZ + 1 };
+  });
+  public setCardPosition = this.updater((state, prop: { cardId: number; newPosition: Vector2 }) => {
+    const cards = state.cards;
+    cards[prop.cardId].position = prop.newPosition;
+    return { ...state, cards: cards };
+  });
+
+  public cardsS = this.selectSignal((state) => {
+    return state.cards;
+  });
+
+  public stateS = this.selectSignal((state) => {
+    return state;
+  });
+
+  public generateNewGame = this.updater((state, gameSettings: GameSettings) => {
+    const cards = this.generateCards(gameSettings.cardAmount, gameSettings.boardSize);
+    const startTime = new Date();
+    const status = 'playing';
+    const round = 1;
+    return { ...state, cards, startTime, status, round };
+  });
 
   private generatePlayer(playerAmount: number): Player[] {
     return [];

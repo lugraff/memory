@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, HostBinding, Input, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Subscription, debounceTime, flatMap, switchMap } from 'rxjs';
 import { emptyVector2 } from 'src/app/models/emptyModels';
 import { Vector2 } from 'src/app/models/models';
 import { PointerEventService } from 'src/app/services/pointer-events-service';
@@ -30,14 +30,14 @@ export class CardComponent {
   public moving = signal(false);
   public moveOffset = signal<Vector2>(emptyVector2);
 
+  private lastTime = 0;
+
   public onDown(event: PointerEvent): void {
-    this.store.gameData.mutate((state) => {
-      state.cards[this.id].zIndex = state.lastZ++;
-      this.activeScale.set(1.1);
-    });
+    this.store.setCardIndex(this.id);
+    this.activeScale.set(1.1);
     if (!this.animOpenStarted() && !this.animCloseStarted()) {
       this.randomRotate.set((Math.random() - 0.5) * 9);
-      if (this.store.gameData().cards[this.id].open) {
+      if (this.store.cardsS()[this.id].open) {
         // this.CloseAnimation();
         this.onStartMove(event);
       } else {
@@ -57,7 +57,7 @@ export class CardComponent {
     this.activeScale.set(1);
     if (!this.animOpenStarted() && !this.animCloseStarted()) {
       this.randomRotate.set((Math.random() - 0.5) * 9);
-      if (this.store.gameData().cards[this.id].open) {
+      if (this.store.cardsS()[this.id].open) {
         // this.CloseAnimation();
         // this.onStartMove(event);
       } else {
@@ -69,7 +69,7 @@ export class CardComponent {
   private OpenAnimation(): void {
     this.animOpenStarted.set(true);
     setTimeout(() => {
-      this.store.gameData.mutate((gameData) => (gameData.cards[this.id].open = true));
+      this.store.setCardOpenOrClosed({ cardId: this.id, OpenOrClosed: true });
       setTimeout(() => {
         this.animOpenStarted.set(false);
       }, 300);
@@ -79,7 +79,7 @@ export class CardComponent {
   private CloseAnimation(): void {
     this.animCloseStarted.set(true);
     setTimeout(() => {
-      this.store.gameData.mutate((gameData) => (gameData.cards[this.id].open = false));
+      this.store.setCardOpenOrClosed({ cardId: this.id, OpenOrClosed: false });
       setTimeout(() => {
         this.animCloseStarted.set(false);
       }, 300);
@@ -97,14 +97,17 @@ export class CardComponent {
   }
 
   public onMove(event: MouseEvent | undefined): void {
+    const newTime = new Date().getTime();
+    console.log(newTime - this.lastTime);
+    this.lastTime = newTime;
     if (!this.moving() || event === undefined) {
       return;
     }
     const newPosition: Vector2 = {
-      x: this.WithinX(event.clientX - this.moveOffset().x, this.store.gameData().cards[this.id].size.x),
-      y: this.WithinY(event.clientY - this.moveOffset().y, this.store.gameData().cards[this.id].size.y),
+      x: this.WithinX(event.clientX - this.moveOffset().x, this.store.cardsS()[this.id].size.x),
+      y: this.WithinY(event.clientY - this.moveOffset().y, this.store.cardsS()[this.id].size.y),
     };
-    this.store.gameData.mutate((state) => (state.cards[this.id].position = newPosition));
+    this.store.setCardPosition({ cardId: this.id, newPosition: newPosition });
   }
 
   private WithinX(popupPositionX: number, popupWidth: number): number {

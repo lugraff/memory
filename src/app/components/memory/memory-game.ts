@@ -8,9 +8,12 @@ import { InputNumberComponent } from '../input-number/input-number.component';
 import { setFullscreen } from 'src/app/utils/screen-settings';
 import { PointerEventService } from 'src/app/services/pointer-events-service';
 import { ReplaySubject, takeUntil } from 'rxjs';
+import { GameSettings } from 'src/app/models/models';
+import { MachineInfoService } from 'src/app/services/machine-info-service';
 
 @Component({
   selector: 'app-memory-game',
+  providers: [MemoryStore],
   imports: [CommonModule, FormsModule, NgOptimizedImage, CardComponent, StandardButtonComponent, InputNumberComponent],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -18,6 +21,7 @@ import { ReplaySubject, takeUntil } from 'rxjs';
 })
 export class MemoryGameComponent implements OnInit, OnDestroy {
   public store = inject(MemoryStore);
+  public machineInfo = inject(MachineInfoService);
   private destroy$ = new ReplaySubject<boolean>(1);
 
   public inputCardCount = 18;
@@ -40,13 +44,13 @@ export class MemoryGameComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnInit(): void {
-    
-  }
+  ngOnInit(): void {}
 
   onStartGame() {
-    this.store.generateNewGame(this.inputCardCount, { x: innerWidth, y: innerHeight });
-    // setFullscreen();
+    this.store.generateNewGame({ cardAmount: this.inputCardCount, boardSize: { x: innerWidth, y: innerHeight } });
+    if (this.machineInfo.isMobile) {
+      setFullscreen();
+    }
   }
 
   ngOnDestroy(): void {

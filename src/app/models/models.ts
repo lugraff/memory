@@ -13,14 +13,9 @@ export interface Card {
   color?: string;
 }
 
-export interface MemoryData {
-  status: string;
-  round: number;
-  cards: Card[];
-  player: Player[];
-  actualPlayerId: number;
-  startTime: Date;
-  lastZ: number;
+export interface GameSettings {
+  cardAmount: number;
+  boardSize: Vector2;
 }
 
 export interface Player {
