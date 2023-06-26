@@ -6,8 +6,8 @@ import { RouterModule } from '@angular/router';
   imports: [RouterModule],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<div class="w-screen h-screen bg-bgA flex text-textA selection:bg-selection scrollbar">
-      <div class="grow scrollbar">
+  template: `<div class="w-screen h-screen flex text-textA selection:bg-selection">
+      <div class="grow w-full h-full">
         <router-outlet></router-outlet>
       </div>
     </div>

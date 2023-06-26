@@ -117,8 +117,8 @@ export class CardComponent {
     }
     let newX = event.clientX - this.moveOffset().x;
     let newY = event.clientY - this.moveOffset().y;
-    newX = this.limit.transform(newX, 0, window.innerWidth - this.store.cardsS()[this.id].size.x);
-    newY = this.limit.transform(newY, 0, window.innerHeight - this.store.cardsS()[this.id].size.y);
+    newX = this.limit.transform(newX, 16, window.innerWidth - this.store.cardsS()[this.id].size.x - 16);
+    newY = this.limit.transform(newY, 16, window.innerHeight - this.store.cardsS()[this.id].size.y - 16);
     this.store.setCardPosition({ cardId: this.id, newPosition: { x: newX, y: newY } });
   }
 

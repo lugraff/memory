@@ -97,8 +97,9 @@ export class MemoryStore extends ComponentStore<MemoryState> {
     }
     const newCards: Card[] = [];
     const borderSpace = 20;
-    const sidelengthCard = this.calcCardSize(cardAmount, boardSize, borderSpace);
-    const positions: Vector2[] = this.calcPositions(cardAmount, sidelengthCard, boardSize, borderSpace);
+    const gap = 16;
+    const sidelengthCard = this.calcCardSize(cardAmount, boardSize, borderSpace, gap);
+    const positions: Vector2[] = this.calcPositions(cardAmount, sidelengthCard, boardSize, borderSpace, gap);
     for (let index = 0; index < cardAmount; index += 2) {
       const randomChip = Math.floor(Math.random() * 8);
       const randomColor =
@@ -135,15 +136,15 @@ export class MemoryStore extends ComponentStore<MemoryState> {
     return newCards;
   }
 
-  private calcCardSize(cardAmount: number, boardSize: Vector2, borderSpace: number): number {
+  private calcCardSize(cardAmount: number, boardSize: Vector2, borderSpace: number, gap: number): number {
     const boardSizeQ = boardSize.x * boardSize.y;
     for (
       let sidelengthCard = 64;
-      sidelengthCard <= Math.min(boardSize.x - borderSpace, boardSize.y - borderSpace);
+      sidelengthCard <= Math.min(boardSize.x - borderSpace - gap, boardSize.y - borderSpace - gap);
       sidelengthCard += 8
     ) {
-      const squareArea = cardAmount * (sidelengthCard + 16) * (sidelengthCard + 16);
-      if (squareArea >= boardSizeQ * 0.8 || sidelengthCard >= 192) {
+      const squareArea = cardAmount * sidelengthCard * sidelengthCard;
+      if (squareArea >= boardSizeQ || sidelengthCard >= 196) {
         return sidelengthCard;
       }
     }
@@ -154,17 +155,19 @@ export class MemoryStore extends ComponentStore<MemoryState> {
     cardAmount: number,
     sidelengthCard: number,
     boardSize: Vector2,
-    borderSpace: number
+    borderSpace: number,
+    gap: number
   ): Vector2[] {
     const positions: Vector2[] = [];
     let newX = borderSpace;
     let newY = borderSpace;
     for (let index = 0; index < cardAmount; index++) {
       positions.push({ x: newX, y: newY });
-      newX += sidelengthCard;
-      if (newX >= boardSize.x - sidelengthCard) {
-        newY += sidelengthCard;
-        newX = borderSpace;
+      newX += sidelengthCard + Math.random() * 2 + gap;
+      newY += (Math.random() - 0.5) * 2;
+      if (newX >= boardSize.x - sidelengthCard - gap) {
+        newX = borderSpace + Math.random() * 2 + gap;
+        newY += sidelengthCard + gap;
       }
     }
     shuffleArray(positions);
