@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, HostBinding, Input, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, effect, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Subscription, debounceTime, flatMap, switchMap } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { emptyVector2 } from 'src/app/models/emptyModels';
 import { Vector2 } from 'src/app/models/models';
 import { LimitNumber } from 'src/app/pipes/limit-number.pipe';
@@ -20,7 +20,7 @@ export class CardComponent {
   private pointerEvents = inject(PointerEventService);
   private limit = inject(LimitNumber);
 
-  @Input() public id = -1;
+  @Input() public cardId = -1;
 
   private subs: Subscription[] = [];
 
@@ -31,8 +31,25 @@ export class CardComponent {
   public moving = signal(false);
   public moveOffset = signal<Vector2>(emptyVector2);
 
+  constructor() {
+    effect(
+      () => {
+        for (const card of this.store.cardsS()) {
+          if (card.id === this.cardId) {
+            if (card.signal === 'close') {
+              this.closeAnimation();
+              this.store.setCardSignal({ cardId: this.cardId, signal: '' });
+            }
+            break;
+          }
+        }
+      },
+      { allowSignalWrites: true }
+    );
+  }
+
   public onDown(event: PointerEvent): void {
-    this.store.setCardIndex(this.id);
+    this.store.setCardIndex(this.cardId);
     this.activeScale.set(1.1);
     if (!this.animOpenStarted() && !this.animCloseStarted()) {
       this.randomRotate.set((Math.random() - 0.5) * 9);
@@ -41,14 +58,17 @@ export class CardComponent {
   }
 
   public onDoubleClick() {
+    if (this.store.lastOpenedCardIdsS().includes(this.cardId)) {
+      return;
+    }
     this.activeScale.set(1);
     if (!this.animOpenStarted() && !this.animCloseStarted()) {
       this.randomRotate.set((Math.random() - 0.5) * 9);
       if (this.store.lastOpenedCardIdsS().length < 2) {
-        if (this.store.cardsS()[this.id].open) {
-          this.CloseAnimation();
+        if (this.store.cardsS()[this.cardId].open) {
+          //this.CloseAnimation();
         } else {
-          this.OpenAnimation();
+          this.openAnimation();
         }
       }
     }
@@ -58,30 +78,34 @@ export class CardComponent {
     this.activeScale.set(1);
   }
 
-  private OpenAnimation(): void {
+  private openAnimation(): void {
     this.animOpenStarted.set(true);
     setTimeout(() => {
-      this.store.setCardOpenOrClosed({ cardId: this.id, openOrClosed: true });
-      this.store.addlastOpenedCardIds(this.id);
+      this.store.setCardOpenOrClosed({ cardId: this.cardId, openOrClosed: true });
+      this.store.addlastOpenedCardIds(this.cardId);
       setTimeout(() => {
         this.animOpenStarted.set(false);
         if (this.store.lastOpenedCardIdsS().length === 2) {
           setTimeout(() => {
-            if (this.id % 2 !== 0) {
-              if (this.store.cardsS()[this.id - 1].open === true) {
-                this.store.setCardPosition({ cardId: this.id, newPosition: this.store.cardsS()[this.id - 1].position });
+            if (this.cardId % 2 !== 0) {
+              if (this.store.cardsS()[this.cardId - 1].open === true) {
+                this.store.setCardPosition({
+                  cardId: this.cardId,
+                  newPosition: this.store.cardsS()[this.cardId - 1].position,
+                });
               } else {
-                this.store.setCardOpenOrClosed({ cardId: this.store.lastOpenedCardIdsS()[0], openOrClosed: false });
-                this.store.setCardOpenOrClosed({ cardId: this.store.lastOpenedCardIdsS()[1], openOrClosed: false });
-                // this.CloseAnimation();
+                this.store.setCardSignal({ cardId: this.store.lastOpenedCardIdsS()[0], signal: 'close' });
+                this.closeAnimation();
               }
             } else {
-              if (this.store.cardsS()[this.id + 1].open === true) {
-                this.store.setCardPosition({ cardId: this.id, newPosition: this.store.cardsS()[this.id + 1].position });
+              if (this.store.cardsS()[this.cardId + 1].open === true) {
+                this.store.setCardPosition({
+                  cardId: this.cardId,
+                  newPosition: this.store.cardsS()[this.cardId + 1].position,
+                });
               } else {
-                this.store.setCardOpenOrClosed({ cardId: this.store.lastOpenedCardIdsS()[0], openOrClosed: false });
-                this.store.setCardOpenOrClosed({ cardId: this.store.lastOpenedCardIdsS()[1], openOrClosed: false });
-                // this.CloseAnimation();
+                this.store.setCardSignal({ cardId: this.store.lastOpenedCardIdsS()[0], signal: 'close' });
+                this.closeAnimation();
               }
             }
             this.store.resetlastOpenedCardIds();
@@ -91,10 +115,10 @@ export class CardComponent {
     }, 300);
   }
 
-  private CloseAnimation(): void {
+  public closeAnimation(): void {
     this.animCloseStarted.set(true);
     setTimeout(() => {
-      this.store.setCardOpenOrClosed({ cardId: this.id, openOrClosed: false });
+      this.store.setCardOpenOrClosed({ cardId: this.cardId, openOrClosed: false });
       setTimeout(() => {
         this.animCloseStarted.set(false);
       }, 300);
@@ -117,9 +141,9 @@ export class CardComponent {
     }
     let newX = event.clientX - this.moveOffset().x;
     let newY = event.clientY - this.moveOffset().y;
-    newX = this.limit.transform(newX, 16, window.innerWidth - this.store.cardsS()[this.id].size.x - 16);
-    newY = this.limit.transform(newY, 16, window.innerHeight - this.store.cardsS()[this.id].size.y - 16);
-    this.store.setCardPosition({ cardId: this.id, newPosition: { x: newX, y: newY } });
+    newX = this.limit.transform(newX, 16, window.innerWidth - this.store.cardsS()[this.cardId].size.x - 16);
+    newY = this.limit.transform(newY, 16, window.innerHeight - this.store.cardsS()[this.cardId].size.y - 16);
+    this.store.setCardPosition({ cardId: this.cardId, newPosition: { x: newX, y: newY } });
   }
 
   public onEnd(): void {

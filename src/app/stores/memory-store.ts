@@ -57,6 +57,11 @@ export class MemoryStore extends ComponentStore<MemoryState> {
     cards[prop.cardId].position = prop.newPosition;
     return { ...state, cards: cards };
   });
+  public setCardSignal = this.updater((state, prop: { cardId: number; signal: string }) => {
+    const cards = state.cards;
+    cards[prop.cardId].signal = prop.signal;
+    return { ...state, cards: [...cards] };
+  });
 
   public addlastOpenedCardIds = this.updater((state, cardId: number) => {
     const lastOpenedCardIds = state.lastOpenedCardIds;
@@ -100,6 +105,7 @@ export class MemoryStore extends ComponentStore<MemoryState> {
     const gap = 16;
     const sidelengthCard = this.calcCardSize(cardAmount, boardSize, borderSpace, gap);
     const positions: Vector2[] = this.calcPositions(cardAmount, sidelengthCard, boardSize, borderSpace, gap);
+    const backNr = Math.round(Math.random() + 1);
     for (let index = 0; index < cardAmount; index += 2) {
       const randomChip = Math.floor(Math.random() * 8);
       const randomColor =
@@ -114,20 +120,24 @@ export class MemoryStore extends ComponentStore<MemoryState> {
         {
           id: index,
           open: false,
+          signal: '',
           size: { x: sidelengthCard, y: sidelengthCard },
           position: { x: positions[positions.length - 1].x, y: positions[positions.length - 1].y },
           zIndex: 1,
           color: randomColor,
           imgUrl: 'url(assets/' + this.chipsNames[randomChip] + ')',
+          backNr: backNr,
         },
         {
           id: index + 1,
           open: false,
+          signal: '',
           size: { x: sidelengthCard, y: sidelengthCard },
           position: { x: positions[positions.length - 2].x, y: positions[positions.length - 2].y },
           zIndex: 1,
           color: randomColor,
           imgUrl: 'url(assets/' + this.chipsNames[randomChip] + ')',
+          backNr: backNr,
         }
       );
       positions.pop();

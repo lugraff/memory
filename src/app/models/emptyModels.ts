@@ -3,9 +3,11 @@ import { Card, Vector2 } from './models';
 const emptyCardRef: Card = {
   id: -1,
   open: false,
+  signal: '',
   size: { x: 0, y: 0 },
   position: { x: 0, y: 0 },
   zIndex: 1,
+  backNr: 1,
 };
 export const emptyCard = JSON.parse(JSON.stringify(emptyCardRef));
 

@@ -1,4 +1,4 @@
-<div *ngIf="store.state().cards[this.id] as card" (pointerdown)="onDown($event)" (pointerleave)="onLeave()"
+<div *ngIf="store.state().cards[this.cardId] as card" (pointerdown)="onDown($event)" (pointerleave)="onLeave()"
   (dblclick)="onDoubleClick()" [style.transform]="'scale(' + activeScale() + ',' + activeScale() + ')'"
   [ngClass]="moving()?'':'duration-200'"
   [ngStyle]="{rotate:randomRotate()+'deg', left:card.position.x+'px', top:card.position.y+'px', zIndex:card.zIndex}"
@@ -17,7 +17,7 @@
 
   <ng-template #cardClosed>
     <div class="duration-300 animate-flip border border-textB rounded-md transform-gpu" [ngStyle]="{
-        backgroundImage: 'url(assets/card_back_1.png)', 
+        backgroundImage: 'url(assets/card_back_'+card.backNr+'.png)', 
         backgroundSize: card.size.x+'px ' + card.size.y+'px', 
         width: card.size.x+'px', 
         height: card.size.y+'px'}" [ngClass]="animOpenStarted() && !card.open ? 'scale-x-0 scale-y-125' : ''">

@@ -6,9 +6,11 @@ export interface Vector2 {
 export interface Card {
   id: number;
   open: boolean;
+  signal: string;
   size: Vector2;
   position: Vector2;
   zIndex: number;
+  backNr: number;
   imgUrl?: string;
   color?: string;
 }

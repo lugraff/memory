@@ -16,6 +16,6 @@
 
 <ng-container *ngIf="store.statusS() === 'playing'">
   <ng-container *ngFor="let card of store.cardsS()">
-    <app-card [id]="card.id"></app-card>
+    <app-card [cardId]="card.id" [id]="'card_'+card.id"></app-card>
   </ng-container>
 </ng-container>
