@@ -93,6 +93,7 @@ export class CardComponent {
                   cardId: this.cardId,
                   newPosition: this.store.cardsS()[this.cardId - 1].position,
                 });
+                this.store.addPoint(this.store.actualPlayerIdS());
               } else {
                 this.store.setCardSignal({ cardId: this.store.lastOpenedCardIdsS()[0], signal: 'close' });
                 this.closeAnimation();
@@ -103,12 +104,15 @@ export class CardComponent {
                   cardId: this.cardId,
                   newPosition: this.store.cardsS()[this.cardId + 1].position,
                 });
+                this.store.addPoint(this.store.actualPlayerIdS());
               } else {
                 this.store.setCardSignal({ cardId: this.store.lastOpenedCardIdsS()[0], signal: 'close' });
                 this.closeAnimation();
               }
             }
             this.store.resetlastOpenedCardIds();
+            this.store.nextRound();
+            this.store.nextPlayer();
           }, 300);
         }
       }, 300);

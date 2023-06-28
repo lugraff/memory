@@ -1,6 +1,12 @@
-export interface Vector2 {
-  x: number;
-  y: number;
+export interface MemoryState {
+  status: string;
+  round: number;
+  lastOpenedCardIds: number[];
+  cards: Card[];
+  player: Player[];
+  actualPlayerId: number;
+  startTime: Date;
+  lastZ: number;
 }
 
 export interface Card {
@@ -27,4 +33,10 @@ export interface Player {
   name: string;
   color: string;
   ki: boolean;
+  points: number;
+}
+
+export interface Vector2 {
+  x: number;
+  y: number;
 }

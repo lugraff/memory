@@ -1,14 +1,12 @@
 import { CommonModule, NgOptimizedImage } from '@angular/common';
-import { ChangeDetectionStrategy, Component, HostListener, OnDestroy, OnInit, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, OnDestroy, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MemoryStore } from '../../stores/memory-store';
 import { CardComponent } from '../card/card';
 import { StandardButtonComponent } from '../buttons/standard/standard-button.component';
 import { InputNumberComponent } from '../input-number/input-number.component';
 import { setFullscreen } from 'src/app/utils/screen-settings';
-import { PointerEventService } from 'src/app/services/pointer-events-service';
-import { ReplaySubject, takeUntil } from 'rxjs';
-import { GameSettings } from 'src/app/models/models';
+import { ReplaySubject } from 'rxjs';
 import { MachineInfoService } from 'src/app/services/machine-info-service';
 
 @Component({
@@ -19,7 +17,7 @@ import { MachineInfoService } from 'src/app/services/machine-info-service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './memory-game.html',
 })
-export class MemoryGameComponent implements OnInit, OnDestroy {
+export class MemoryGameComponent implements OnDestroy {
   public store = inject(MemoryStore);
   public machineInfo = inject(MachineInfoService);
   private destroy$ = new ReplaySubject<boolean>(1);
@@ -44,7 +42,12 @@ export class MemoryGameComponent implements OnInit, OnDestroy {
     }
   }
 
-  ngOnInit(): void {}
+  //TODO IMG Loading (Pexels,Predefine:WikiCommons,JSON-API,...???)
+  //TODO Musik & SFX
+  //TODO Settings
+  //TODO Start Animation & Final Animation
+  //TODO Backboard(Background)
+  //TODO own Tailwind Colors
 
   onStartGame() {
     this.store.generateNewGame({

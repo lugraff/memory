@@ -18,7 +18,15 @@
   <ng-container *ngFor="let card of store.cardsS()">
     <app-card [cardId]="card.id" [id]="'card_'+card.id"></app-card>
   </ng-container>
-  <div class="fixed left-0 top-0 w-screen h-screen pointer-events-none select-none grid z-[9999]">
-    <div>{{ store.playerS()|json }}</div>
+  <div class="fixed left-1 top-1 w-screen h-screen pointer-events-none select-none z-[9999]">
+    <div
+      class="w-24 h-24 rounded-full shadow-md shadow-textB opacity-80 p-1 grid text-center font-semibold overflow-hidden"
+      [ngStyle]="{ backgroundColor:store.playerS()[store.actualPlayerIdS()].color}">
+      <!-- , backgroundImage: 'url(assets/deer.png)',backgroundSize: '128px 128px' -->
+      <div class="text-xs">Runde {{ store.roundS() }}</div>
+      <div class="self-center text-lg">{{ store.playerS()[store.actualPlayerIdS()].points }}</div>
+      <div class="self-end">{{ store.playerS()[store.actualPlayerIdS()].name }}</div>
+    </div>
+    <div></div>
   </div>
 </ng-container>

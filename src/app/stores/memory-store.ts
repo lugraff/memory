@@ -1,21 +1,13 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { ComponentStore } from '@ngrx/component-store';
-import { Card, GameSettings, Player, Vector2 } from '../models/models';
+import { Card, GameSettings, MemoryState, Player, Vector2 } from '../models/models';
 import { shuffleArray } from '../utils/helper-functions';
-
-interface MemoryState {
-  status: string;
-  round: number;
-  lastOpenedCardIds: number[];
-  cards: Card[];
-  player: Player[];
-  actualPlayerId: number;
-  startTime: Date;
-  lastZ: number;
-}
+import { LimitNumber } from '../pipes/limit-number.pipe';
 
 @Injectable()
 export class MemoryStore extends ComponentStore<MemoryState> {
+  private limit = inject(LimitNumber);
+
   private readonly chipsNames = [
     'deer.png',
     'dolphin.png',
@@ -46,21 +38,30 @@ export class MemoryStore extends ComponentStore<MemoryState> {
     cards[cardId].zIndex = state.lastZ;
     return { ...state, cards: cards, lastZ: state.lastZ + 1 };
   });
+
   public setCardOpenOrClosed = this.updater((state, prop: { cardId: number; openOrClosed: boolean }) => {
     const cards = state.cards;
     cards[prop.cardId].zIndex = state.lastZ;
     cards[prop.cardId].open = prop.openOrClosed;
     return { ...state, cards: cards, lastZ: state.lastZ + 1 };
   });
+
   public setCardPosition = this.updater((state, prop: { cardId: number; newPosition: Vector2 }) => {
     const cards = state.cards;
     cards[prop.cardId].position = prop.newPosition;
     return { ...state, cards: cards };
   });
+
   public setCardSignal = this.updater((state, prop: { cardId: number; signal: string }) => {
     const cards = state.cards;
     cards[prop.cardId].signal = prop.signal;
     return { ...state, cards: [...cards] };
+  });
+
+  public addPoint = this.updater((state, playerId: number) => {
+    const player = state.player;
+    player[playerId].points++;
+    return { ...state, player: [...player] };
   });
 
   public addlastOpenedCardIds = this.updater((state, cardId: number) => {
@@ -88,6 +89,21 @@ export class MemoryStore extends ComponentStore<MemoryState> {
     return state.player;
   });
 
+  public actualPlayerIdS = this.selectSignal((state) => {
+    return state.actualPlayerId;
+  });
+  public nextPlayer = this.updater((state) => {
+    const nextPlayer = this.limit.transform(++state.actualPlayerId, 0, state.player.length - 1, true);
+    return { ...state, actualPlayerId: nextPlayer };
+  });
+
+  public roundS = this.selectSignal((state) => {
+    return state.round;
+  });
+  public nextRound = this.updater((state) => {
+    return { ...state, round: state.round + 1 };
+  });
+
   public generateNewGame = this.updater((state, gameSettings: GameSettings) => {
     const cards = this.generateCards(gameSettings.cardAmount, gameSettings.boardSize);
     const startTime = new Date();
@@ -102,7 +118,7 @@ export class MemoryStore extends ComponentStore<MemoryState> {
   private generatePlayer(playerAmount: number): Player[] {
     const player: Player[] = [];
     for (let index = 0; index < playerAmount; index++) {
-      player.push({ name: 'Spieler ' + (index + 1), id: index, color: '#5576a4', ki: false });
+      player.push({ name: 'Spieler ' + (index + 1), id: index, color: '#5576a4', ki: false, points: 0 });
     }
     return player;
   }
@@ -110,7 +126,7 @@ export class MemoryStore extends ComponentStore<MemoryState> {
   private generateKI(kiAmount: number, playerCount: number): Player[] {
     const ki: Player[] = [];
     for (let index = 0; index < kiAmount; index++) {
-      ki.push({ name: 'KI ' + (index + 1), id: index + playerCount, color: '#90a257', ki: true });
+      ki.push({ name: 'KI ' + (index + 1), id: index + playerCount, color: '#90a257', ki: true, points: 0 });
     }
     return ki;
   }
