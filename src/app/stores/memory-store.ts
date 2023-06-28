@@ -84,16 +84,35 @@ export class MemoryStore extends ComponentStore<MemoryState> {
     return state.lastOpenedCardIds;
   });
 
+  public playerS = this.selectSignal((state) => {
+    return state.player;
+  });
+
   public generateNewGame = this.updater((state, gameSettings: GameSettings) => {
     const cards = this.generateCards(gameSettings.cardAmount, gameSettings.boardSize);
     const startTime = new Date();
     const status = 'playing';
     const round = 1;
-    return { ...state, cards, startTime, status, round };
+    const player = this.generatePlayer(gameSettings.playerCount);
+    const ki = this.generateKI(gameSettings.kiCount, player.length);
+    player.push(...ki);
+    return { ...state, cards, startTime, status, round, player };
   });
 
   private generatePlayer(playerAmount: number): Player[] {
-    return [];
+    const player: Player[] = [];
+    for (let index = 0; index < playerAmount; index++) {
+      player.push({ name: 'Spieler ' + (index + 1), id: index, color: '#5576a4', ki: false });
+    }
+    return player;
+  }
+
+  private generateKI(kiAmount: number, playerCount: number): Player[] {
+    const ki: Player[] = [];
+    for (let index = 0; index < kiAmount; index++) {
+      ki.push({ name: 'KI ' + (index + 1), id: index + playerCount, color: '#90a257', ki: true });
+    }
+    return ki;
   }
 
   private generateCards(cardAmount: number, boardSize: Vector2): Card[] {

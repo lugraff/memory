@@ -7,7 +7,7 @@
     <global-input-number inputType="number" inputFieldWidth="3rem" [disabled]="true" [step]="1" [max]="4" [min]="1"
       [(ngModel)]="inputPlayerCount">Spieler:</global-input-number>
     <global-input-number inputType="number" inputFieldWidth="3rem" [disabled]="true" [step]="1" [max]="4" [min]="0"
-      [(ngModel)]="inputNPCCount">KI
+      [(ngModel)]="inputKiCount">KI
       Spieler:</global-input-number>
     <hr>
     <button standard (click)="onStartGame()">Spiel starten</button>
@@ -18,4 +18,7 @@
   <ng-container *ngFor="let card of store.cardsS()">
     <app-card [cardId]="card.id" [id]="'card_'+card.id"></app-card>
   </ng-container>
+  <div class="fixed left-0 top-0 w-screen h-screen pointer-events-none select-none grid z-[9999]">
+    <div>{{ store.playerS()|json }}</div>
+  </div>
 </ng-container>

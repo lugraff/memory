@@ -17,6 +17,8 @@ export interface Card {
 
 export interface GameSettings {
   cardAmount: number;
+  playerCount: number;
+  kiCount: number;
   boardSize: Vector2;
 }
 
@@ -24,4 +26,5 @@ export interface Player {
   id: number;
   name: string;
   color: string;
+  ki: boolean;
 }

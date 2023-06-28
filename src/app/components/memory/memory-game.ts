@@ -26,7 +26,7 @@ export class MemoryGameComponent implements OnInit, OnDestroy {
 
   public inputCardCount = 18;
   public inputPlayerCount = 1;
-  public inputNPCCount = 0;
+  public inputKiCount = 0;
 
   @HostListener('contextmenu', ['$event'])
   onRightClick(event: MouseEvent) {
@@ -47,7 +47,12 @@ export class MemoryGameComponent implements OnInit, OnDestroy {
   ngOnInit(): void {}
 
   onStartGame() {
-    this.store.generateNewGame({ cardAmount: this.inputCardCount, boardSize: { x: innerWidth, y: innerHeight } });
+    this.store.generateNewGame({
+      cardAmount: this.inputCardCount,
+      playerCount: this.inputPlayerCount,
+      kiCount: this.inputKiCount,
+      boardSize: { x: innerWidth, y: innerHeight },
+    });
     if (this.machineInfo.isMobile) {
       setFullscreen();
     }
