@@ -72,7 +72,7 @@ module.exports = {
         hover: 'hover 2s ease-in-out infinite',
         zoomIn: 'zoomIn 300ms ease 1',
         zoomOut: 'zoomOut 300ms ease 1',
-        slideIn: 'slideIn 300ms ease 1',
+        slideIn: 'slideIn 400ms ease-in 1',
         slideOut: 'slideOut 300ms ease 1',
       },
     },

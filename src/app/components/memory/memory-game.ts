@@ -44,10 +44,11 @@ export class MemoryGameComponent implements OnDestroy {
 
   //TODO IMG Loading (Pexels,Predefine:WikiCommons,JSON-API,...???)
   //TODO Musik & SFX
-  //TODO Settings
-  //TODO Start Animation & Final Animation
+  //TODO Settings (Fullscreen, musik, sfx, )
+  //TODO Final Animation End Game
   //TODO Backboard(Background)
-  //TODO own Tailwind Colors
+  //TODO Exit Fullscreen
+  //TODO StatusCircle Gross in der mitte und rechts unten klein status mit animation geben und die tierchips
 
   onStartGame() {
     this.store.generateNewGame({

@@ -1,5 +1,24 @@
 <div *ngIf="store.statusS() === 'menu'" class="grid w-full h-full justify-center items-center p-3 text-xl">
-  <div class="grid grid-flow-row gap-2">
+  <div class="absolute left-[56vw] top-[30vh] -rotate-12 border border-black rounded-md" [ngStyle]="{
+    backgroundImage: 'url(assets/card_back_1.png)', 
+    backgroundSize: '128px 128px', 
+    width: '128px', 
+    height: '128px'}">
+    <div
+      class="absolute w-full h-full from-tertiary to-secondary bg-gradient-to-t mix-blend-overlay saturate-150 opacity-90">
+    </div>
+  </div>
+  <div class="absolute left-[48vw] top-[36vh] rotate-6 border border-black rounded-md" [ngStyle]="{
+    backgroundImage: 'url(assets/card_back_1.png)', 
+    backgroundSize: '128px 128px', 
+    width: '128px', 
+    height: '128px'}">
+    <div
+      class="absolute w-full h-full from-tertiary to-secondary bg-gradient-to-t mix-blend-overlay saturate-150 opacity-90">
+    </div>
+  </div>
+  <div
+    class="grid grid-flow-row gap-2 z-10 backdrop-brightness-[0.33] rounded-md p-3 shadow-xl shadow-black animate-slideIn">
     <div class="header p-3">Memory</div>
     <hr>
     <global-input-number inputType="number" inputFieldWidth="4rem" [disabled]="true" [step]="2" [max]="256" [min]="4"
@@ -20,12 +39,11 @@
   </ng-container>
   <div class="fixed left-[99%] top-[99%] -translate-x-full -translate-y-full pointer-events-none select-none z-[9999]">
     <div
-      class="w-32 h-32 rounded-full shadow-md shadow-black opacity-70 p-1 grid text-center font-semibold overflow-hidden animate-hover"
-      [ngStyle]="{ backgroundColor:store.playerS()[store.actualPlayerIdS()].color}">
+      class="w-32 h-32 rounded-full shadow-md shadow-black backdrop-brightness-[0.33] p-1 grid text-center font-semibold overflow-hidden animate-zoomIn">
       <!-- , backgroundImage: 'url(assets/deer.png)',backgroundSize: '128px 128px' -->
-      <div class="text-base">Runde {{ store.roundS() }}</div>
+      <div class="text-base pt-2">Runde {{ store.roundS() }}</div>
       <div class="self-center text-xxl">{{ store.playerS()[store.actualPlayerIdS()].points }}</div>
-      <div class="self-end text-lg">{{ store.playerS()[store.actualPlayerIdS()].name }}</div>
+      <div class="self-end text-lg pb-2">{{ store.playerS()[store.actualPlayerIdS()].name }}</div>
     </div>
     <div></div>
   </div>

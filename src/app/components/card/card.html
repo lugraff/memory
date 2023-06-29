@@ -13,6 +13,8 @@
       backgroundImage: card.imgUrl, 
       backgroundSize: card.size.x+'px ' + card.size.y+'px'}">
     </div>
+    <!-- <img class="w-full h-full"
+      src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Painting_of_Dark_Blue_Whale_in_Ocean_Game.jpg/640px-Painting_of_Dark_Blue_Whale_in_Ocean_Game.jpg"> -->
   </div>
 
   <ng-template #cardClosed>
@@ -21,6 +23,9 @@
         backgroundSize: card.size.x+'px ' + card.size.y+'px', 
         width: card.size.x+'px', 
         height: card.size.y+'px'}" [ngClass]="animOpenStarted() && !card.open ? 'scale-x-0 scale-y-125' : ''">
+      <div
+        class="absolute w-full h-full from-tertiary to-secondary bg-gradient-to-t mix-blend-overlay saturate-150 opacity-90">
+      </div>
     </div>
   </ng-template>
 </div>

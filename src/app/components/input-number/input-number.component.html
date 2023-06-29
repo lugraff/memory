@@ -9,7 +9,7 @@
     (valueChangedByOnlyNumbers)="valueChanged($event)" [IntegerMode]="inputType === 'int'" autocomplete="off"
     [disabled]="disabled" [autofocus]="autofocus" (focus)="onGetFocus()" (change)="emitInputText()"
     (ngModelChange)="onChange($event)" autocorrect="off" [spellcheck]="false" [ngStyle]="{width:inputFieldWidth}"
-    class="outline-none bg-bgA placeholder:text-subtle disabled:select-none text-center px-2 text-white" />
+    class="outline-none bg-transparent disabled:select-none text-center px-2 text-white" />
   <button standard *ngIf="step && step !== 0" class="w-10 text-lg font-medium" (click)="onIncrement()">
     +
   </button>
