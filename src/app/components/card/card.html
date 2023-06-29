@@ -7,7 +7,7 @@
       backgroundColor:card.color, 
       width: card.size.x+'px', 
       height: card.size.y+'px'}"
-    class="flex justify-center items-center duration-300 animate-flip border border-textB rounded-md transform-gpu"
+    class="flex justify-center items-center duration-300 animate-flip border border-black rounded-md transform-gpu"
     [ngClass]="animCloseStarted() && card.open ? 'scale-x-0 scale-y-125' : ''">
     <div class="w-full h-full" [ngStyle]="{
       backgroundImage: card.imgUrl, 
@@ -16,7 +16,7 @@
   </div>
 
   <ng-template #cardClosed>
-    <div class="duration-300 animate-flip border border-textB rounded-md transform-gpu" [ngStyle]="{
+    <div class="duration-300 animate-flip border border-black rounded-md transform-gpu" [ngStyle]="{
         backgroundImage: 'url(assets/card_back_'+card.backNr+'.png)', 
         backgroundSize: card.size.x+'px ' + card.size.y+'px', 
         width: card.size.x+'px', 

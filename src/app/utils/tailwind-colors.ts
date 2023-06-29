@@ -10,8 +10,8 @@ interface TailwindColors {
 //INFO Hier immer Tailwind Farben aktuell halten! (von tailwind.json)
 const tailwindColors: TailwindColors = {
   colors: [
-    { name: 'textA', hexCode: '#ffffff' },
-    { name: 'textB', hexCode: '#000000' },
+    { name: 'white', hexCode: '#ffffff' },
+    { name: 'black', hexCode: '#000000' },
     { name: 'warning', hexCode: '#ffcc00' },
     { name: 'danger', hexCode: '#f54b4c' },
     { name: 'primaryH', hexCode: '#9de04b' },

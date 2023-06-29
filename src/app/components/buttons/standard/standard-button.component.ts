@@ -15,7 +15,7 @@ import { IconComponent } from '../../icon/icon.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, IconComponent],
   selector: 'button[standard]',
-  template: `<div class="flex justify-center items-center gap-2 text-secondary overflow-hidden">
+  template: `<div class="flex justify-center items-center gap-2 text-white text-xl overflow-hidden">
     <global-icon
       *ngIf="icon.length"
       [icon]="icon"
@@ -33,7 +33,7 @@ export class StandardButtonComponent implements OnChanges {
   @Input() public iconSize = '1.5rem';
   @Input() public iconColor = '';
   private readonly baseClass =
-    'select-none disabled:brightness-50 disabled:pointer-events-none outline-none text-center rounded-md bg-bgB hover:border-primary border active:brightness-125 active:border-primary transition-all duration-250';
+    'select-none disabled:brightness-50 disabled:pointer-events-none outline-none text-center rounded-md bg-secondary hover:border-primary border active:brightness-125 active:border-primary transition-all duration-250';
   private ngClass = ' border-bgB';
 
   @HostBinding('class') public class = this.baseClass + this.ngClass;

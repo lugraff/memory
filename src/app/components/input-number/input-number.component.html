@@ -1,16 +1,16 @@
 <div class="flex flex-row">
-  <div class="text-sm truncate w-1/2 pr-2 select-none">
+  <div class="truncate w-1/2 pr-2 select-none">
     <ng-content></ng-content>
   </div>
-  <button standard *ngIf="step && step !== 0" class="w-8 text-lg font-medium" (click)="onDecrement()">
+  <button standard *ngIf="step && step !== 0" class="w-10 text-lg font-medium" (click)="onDecrement()">
     -
   </button>
   <input #InputField type="text" [(ngModel)]="inputText" globalOnlyNumbers
     (valueChangedByOnlyNumbers)="valueChanged($event)" [IntegerMode]="inputType === 'int'" autocomplete="off"
     [disabled]="disabled" [autofocus]="autofocus" (focus)="onGetFocus()" (change)="emitInputText()"
     (ngModelChange)="onChange($event)" autocorrect="off" [spellcheck]="false" [ngStyle]="{width:inputFieldWidth}"
-    class="outline-none bg-bgA placeholder:text-subtle disabled:select-none text-center px-2 text-textA" />
-  <button standard *ngIf="step && step !== 0" class="w-8 text-lg font-medium" (click)="onIncrement()">
+    class="outline-none bg-bgA placeholder:text-subtle disabled:select-none text-center px-2 text-white" />
+  <button standard *ngIf="step && step !== 0" class="w-10 text-lg font-medium" (click)="onIncrement()">
     +
   </button>
 </div>

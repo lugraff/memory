@@ -1,12 +1,12 @@
-<div *ngIf="store.statusS() === 'menu'" class="grid w-full h-full justify-center items-center p-3">
+<div *ngIf="store.statusS() === 'menu'" class="grid w-full h-full justify-center items-center p-3 text-xl">
   <div class="grid grid-flow-row gap-2">
     <div class="header p-3">Memory</div>
     <hr>
-    <global-input-number inputType="number" inputFieldWidth="3rem" [disabled]="true" [step]="2" [max]="1000" [min]="4"
+    <global-input-number inputType="number" inputFieldWidth="4rem" [disabled]="true" [step]="2" [max]="256" [min]="4"
       [(ngModel)]="inputCardCount">Karten:</global-input-number>
-    <global-input-number inputType="number" inputFieldWidth="3rem" [disabled]="true" [step]="1" [max]="4" [min]="1"
+    <global-input-number inputType="number" inputFieldWidth="4rem" [disabled]="true" [step]="1" [max]="4" [min]="1"
       [(ngModel)]="inputPlayerCount">Spieler:</global-input-number>
-    <global-input-number inputType="number" inputFieldWidth="3rem" [disabled]="true" [step]="1" [max]="4" [min]="0"
+    <global-input-number inputType="number" inputFieldWidth="4rem" [disabled]="true" [step]="1" [max]="4" [min]="0"
       [(ngModel)]="inputKiCount">KI
       Spieler:</global-input-number>
     <hr>
@@ -18,14 +18,14 @@
   <ng-container *ngFor="let card of store.cardsS()">
     <app-card [cardId]="card.id" [id]="'card_'+card.id"></app-card>
   </ng-container>
-  <div class="fixed left-1 top-1 w-screen h-screen pointer-events-none select-none z-[9999]">
+  <div class="fixed left-[99%] top-[99%] -translate-x-full -translate-y-full pointer-events-none select-none z-[9999]">
     <div
-      class="w-24 h-24 rounded-full shadow-md shadow-textB opacity-80 p-1 grid text-center font-semibold overflow-hidden"
+      class="w-32 h-32 rounded-full shadow-md shadow-black opacity-70 p-1 grid text-center font-semibold overflow-hidden animate-hover"
       [ngStyle]="{ backgroundColor:store.playerS()[store.actualPlayerIdS()].color}">
       <!-- , backgroundImage: 'url(assets/deer.png)',backgroundSize: '128px 128px' -->
-      <div class="text-xs">Runde {{ store.roundS() }}</div>
-      <div class="self-center text-lg">{{ store.playerS()[store.actualPlayerIdS()].points }}</div>
-      <div class="self-end">{{ store.playerS()[store.actualPlayerIdS()].name }}</div>
+      <div class="text-base">Runde {{ store.roundS() }}</div>
+      <div class="self-center text-xxl">{{ store.playerS()[store.actualPlayerIdS()].points }}</div>
+      <div class="self-end text-lg">{{ store.playerS()[store.actualPlayerIdS()].name }}</div>
     </div>
     <div></div>
   </div>
