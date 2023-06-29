@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { MachineInfoService } from './services/machine-info-service';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +14,11 @@ import { RouterModule } from '@angular/router';
   </div>`,
 })
 export class AppComponent {
+  machine = inject(MachineInfoService);
+
   constructor() {
-    screen.orientation.lock('landscape');
+    if (this.machine.isMobile) {
+      screen.orientation.lock('landscape');
+    }
   }
 }

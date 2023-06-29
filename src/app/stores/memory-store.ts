@@ -3,10 +3,12 @@ import { ComponentStore } from '@ngrx/component-store';
 import { Card, GameSettings, MemoryState, Player, Vector2 } from '../models/models';
 import { shuffleArray } from '../utils/helper-functions';
 import { LimitNumber } from '../pipes/limit-number.pipe';
+import { MachineInfoService } from '../services/machine-info-service';
 
 @Injectable()
 export class MemoryStore extends ComponentStore<MemoryState> {
   private limit = inject(LimitNumber);
+  private machine = inject(MachineInfoService);
 
   private readonly chipsNames = [
     'deer.png',
@@ -158,7 +160,7 @@ export class MemoryStore extends ComponentStore<MemoryState> {
           signal: '',
           size: { x: sidelengthCard, y: sidelengthCard },
           position: { x: positions[positions.length - 1].x, y: positions[positions.length - 1].y },
-          zIndex: 1,
+          zIndex: 0,
           color: randomColor,
           imgUrl: 'url(assets/' + this.chipsNames[randomChip] + ')',
           backNr: backNr,
@@ -169,7 +171,7 @@ export class MemoryStore extends ComponentStore<MemoryState> {
           signal: '',
           size: { x: sidelengthCard, y: sidelengthCard },
           position: { x: positions[positions.length - 2].x, y: positions[positions.length - 2].y },
-          zIndex: 1,
+          zIndex: 0,
           color: randomColor,
           imgUrl: 'url(assets/' + this.chipsNames[randomChip] + ')',
           backNr: backNr,
@@ -188,8 +190,13 @@ export class MemoryStore extends ComponentStore<MemoryState> {
       sidelengthCard <= Math.min(boardSize.x - borderSpace - gap, boardSize.y - borderSpace - gap);
       sidelengthCard += 8
     ) {
-      const squareArea = cardAmount * sidelengthCard * sidelengthCard;
-      if (squareArea >= boardSizeQ || sidelengthCard >= 196) {
+      let squareArea = cardAmount * sidelengthCard * sidelengthCard;
+      if (this.machine.isMobile) {
+        squareArea *= 2.2;
+      } else {
+        squareArea *= 1.8;
+      }
+      if (squareArea >= boardSizeQ || sidelengthCard >= 256) {
         return sidelengthCard;
       }
     }
@@ -211,7 +218,7 @@ export class MemoryStore extends ComponentStore<MemoryState> {
       newX += sidelengthCard + Math.random() * 2 + gap;
       newY += (Math.random() - 0.5) * 2;
       if (newX >= boardSize.x - sidelengthCard - gap) {
-        newX = borderSpace + Math.random() * 2 + gap;
+        newX = borderSpace;
         newY += sidelengthCard + gap;
       }
     }
