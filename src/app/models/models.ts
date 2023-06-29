@@ -1,5 +1,8 @@
 export interface MemoryState {
   status: string;
+  circleStatus: string;
+  circlePos: Vector2;
+  circleScale: number;
   round: number;
   lastOpenedCardIds: number[];
   cards: Card[];

@@ -30,6 +30,9 @@ export class MemoryStore extends ComponentStore<MemoryState> {
       lastOpenedCardIds: [],
       startTime: new Date(),
       status: 'menu',
+      circleStatus: '',
+      circlePos: { x: 60, y: 60 },
+      circleScale: 2.2,
       actualPlayerId: 0,
       lastZ: 1,
     });
@@ -81,6 +84,27 @@ export class MemoryStore extends ComponentStore<MemoryState> {
 
   public statusS = this.selectSignal((state) => {
     return state.status;
+  });
+
+  public circleStatusS = this.selectSignal((state) => {
+    return state.circleStatus;
+  });
+  public setCircleStatus = this.updater((state, circleStatus: string) => {
+    return { ...state, circleStatus };
+  });
+
+  public circlePosS = this.selectSignal((state) => {
+    return state.circlePos;
+  });
+  public setCirclePos = this.updater((state, circlePos: Vector2) => {
+    return { ...state, circlePos };
+  });
+
+  public circleScaleS = this.selectSignal((state) => {
+    return state.circleScale;
+  });
+  public setCircleScale = this.updater((state, circleScale: number) => {
+    return { ...state, circleScale };
   });
 
   public lastOpenedCardIdsS = this.selectSignal((state) => {

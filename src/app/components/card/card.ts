@@ -110,13 +110,23 @@ export class CardComponent {
                 this.closeAnimation();
               }
             }
-            this.store.resetlastOpenedCardIds();
-            this.store.nextRound();
-            this.store.nextPlayer();
+            this.nextPlayerAnimation();
           }, 300);
         }
       }, 300);
     }, 300);
+  }
+
+  private nextPlayerAnimation(): void {
+    setTimeout(() => {
+      this.store.setCircleStatus('scale-x-0');
+      setTimeout(() => {
+        this.store.setCircleStatus('');
+        this.store.resetlastOpenedCardIds();
+        this.store.nextRound();
+        this.store.nextPlayer();
+      }, 300);
+    }, 500);
   }
 
   public closeAnimation(): void {

@@ -48,7 +48,7 @@ export class MemoryGameComponent implements OnDestroy {
   //TODO Final Animation End Game
   //TODO Backboard(Background)
   //TODO Exit Fullscreen
-  //TODO StatusCircle Gross in der mitte und rechts unten klein status mit animation geben und die tierchips
+  //TODO StatusCircle tierchips
 
   onStartGame() {
     this.store.generateNewGame({
@@ -60,6 +60,17 @@ export class MemoryGameComponent implements OnDestroy {
     if (this.machineInfo.isMobile) {
       setFullscreen();
     }
+    this.introAnimation();
+  }
+
+  private introAnimation(): void {
+    this.store.resetlastOpenedCardIds();
+    this.store.setCircleStatus('intro');
+    setTimeout(() => {
+      this.store.setCirclePos({ x: 99, y: 99 });
+      this.store.setCircleScale(1);
+      this.store.setCircleStatus('');
+    }, 1500);
   }
 
   ngOnDestroy(): void {

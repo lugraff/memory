@@ -37,14 +37,16 @@
   <ng-container *ngFor="let card of store.cardsS()">
     <app-card [cardId]="card.id" [id]="'card_'+card.id"></app-card>
   </ng-container>
-  <div class="fixed left-[99%] top-[99%] -translate-x-full -translate-y-full pointer-events-none select-none z-[9999]">
+  <div
+    class="fixed -translate-x-full -translate-y-full pointer-events-none select-none z-[9999]  duration-300 ease-in-out"
+    [ngClass]="store.circleStatusS() === 'scale-x-0'?'scale-x-0 scale-y-110':''"
+    [ngStyle]="{left:store.circlePosS().x+'%',top:store.circlePosS().y+'%', scale:store.circleScaleS()}">
     <div
       class="w-32 h-32 rounded-full shadow-md shadow-black backdrop-brightness-[0.33] p-1 grid text-center font-semibold overflow-hidden animate-zoomIn">
       <!-- , backgroundImage: 'url(assets/deer.png)',backgroundSize: '128px 128px' -->
-      <div class="text-base pt-2">Runde {{ store.roundS() }}</div>
-      <div class="self-center text-xxl">{{ store.playerS()[store.actualPlayerIdS()].points }}</div>
-      <div class="self-end text-lg pb-2">{{ store.playerS()[store.actualPlayerIdS()].name }}</div>
+      <div class="text-base pt-3">Runde {{ store.roundS() }}</div>
+      <div class="self-center text-xxl text-primary">{{ store.playerS()[store.actualPlayerIdS()].points }}</div>
+      <div class="self-end text-lg pb-3">{{ store.playerS()[store.actualPlayerIdS()].name }}</div>
     </div>
-    <div></div>
   </div>
 </ng-container>
