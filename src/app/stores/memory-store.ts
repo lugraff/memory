@@ -32,7 +32,7 @@ export class MemoryStore extends ComponentStore<MemoryState> {
       status: 'menu',
       circleStatus: '',
       circlePos: { x: 60, y: 60 },
-      circleScale: 2.2,
+      circleScale: 1.5,
       actualPlayerId: 0,
       lastZ: 1,
     });
