@@ -1,14 +1,17 @@
 import { Injectable, inject } from '@angular/core';
 import { ComponentStore } from '@ngrx/component-store';
-import { Card, GameSettings, MemoryState, Player, Vector2 } from '../models/models';
+import { Card, GameSettings, MemoryState, Picture, Player, Vector2 } from '../models/models';
 import { shuffleArray } from '../utils/helper-functions';
 import { LimitNumber } from '../pipes/limit-number.pipe';
 import { MachineInfoService } from '../services/machine-info-service';
+import { Observable, delay, of, take, takeUntil } from 'rxjs';
+import { ConnectorService } from '../services/connector.service';
 
 @Injectable()
 export class MemoryStore extends ComponentStore<MemoryState> {
   private limit = inject(LimitNumber);
   private machine = inject(MachineInfoService);
+  private connector = inject(ConnectorService);
 
   private readonly chipsNames = [
     'deer.png',
@@ -21,6 +24,8 @@ export class MemoryStore extends ComponentStore<MemoryState> {
     'squirrel.png',
     'turtle.png',
   ];
+
+  private readonly local = true;
 
   constructor() {
     super({
@@ -35,7 +40,22 @@ export class MemoryStore extends ComponentStore<MemoryState> {
       circleScale: 1.5,
       actualPlayerId: 0,
       lastZ: 1,
+      pictureList: [],
     });
+    this.loadPictureList()
+      .pipe(take(1))
+      .subscribe((result) => {
+        console.log(result);
+        this.patchState({ pictureList: result });
+      });
+  }
+
+  public loadPictureList(): Observable<Picture[]> {
+    if (this.local) {
+      return this.connector.get('/assets/pictureList.json'); //of(pictureList).pipe(delay(Math.random() * 300));
+    } else {
+      return this.connector.get('');
+    }
   }
 
   public setCardIndex = this.updater((state, cardId: number) => {
@@ -76,6 +96,10 @@ export class MemoryStore extends ComponentStore<MemoryState> {
   });
   public resetlastOpenedCardIds = this.updater((state) => {
     return { ...state, lastOpenedCardIds: [] };
+  });
+
+  public pictureListS = this.selectSignal((state) => {
+    return state.pictureList;
   });
 
   public cardsS = this.selectSignal((state) => {
@@ -166,9 +190,9 @@ export class MemoryStore extends ComponentStore<MemoryState> {
     const gap = 16;
     const sidelengthCard = this.calcCardSize(cardAmount, boardSize, borderSpace, gap);
     const positions: Vector2[] = this.calcPositions(cardAmount, sidelengthCard, boardSize, borderSpace, gap);
+    const shuffledPics = shuffleArray(this.pictureListS());
     const backNr = Math.round(Math.random() + 1);
     for (let index = 0; index < cardAmount; index += 2) {
-      const randomChip = Math.floor(Math.random() * 8);
       const randomColor =
         '#' +
         Math.floor(Math.random() * 10) +
@@ -186,7 +210,7 @@ export class MemoryStore extends ComponentStore<MemoryState> {
           position: { x: positions[positions.length - 1].x, y: positions[positions.length - 1].y },
           zIndex: 0,
           color: randomColor,
-          imgUrl: 'url(assets/' + this.chipsNames[randomChip] + ')',
+          picture: shuffledPics[shuffledPics.length - 1],
           backNr: backNr,
         },
         {
@@ -197,10 +221,11 @@ export class MemoryStore extends ComponentStore<MemoryState> {
           position: { x: positions[positions.length - 2].x, y: positions[positions.length - 2].y },
           zIndex: 0,
           color: randomColor,
-          imgUrl: 'url(assets/' + this.chipsNames[randomChip] + ')',
+          picture: shuffledPics[shuffledPics.length - 1],
           backNr: backNr,
         }
       );
+      // shuffledPics.pop();
       positions.pop();
       positions.pop();
     }

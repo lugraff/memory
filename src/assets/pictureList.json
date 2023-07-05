@@ -1,0 +1,26 @@
+[
+  {
+    "name": "Tiger",
+    "offset": {
+      "x": 0,
+      "y": 0
+    },
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Tiger_%28Panthera_tigris%29_in_Disney%27s_Animal_Kingdom.jpg/640px-Tiger_%28Panthera_tigris%29_in_Disney%27s_Animal_Kingdom.jpg"
+  },
+  {
+    "name": "tiger",
+    "offset": {
+      "x": 90,
+      "y": 0
+    },
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Panthera_tigris_sumatrae_-_San_Francisco_Zoo_-_San_Francisco%2C_CA_-_DSC03801.jpg/640px-Panthera_tigris_sumatrae_-_San_Francisco_Zoo_-_San_Francisco%2C_CA_-_DSC03801.jpg"
+  },
+  {
+    "name": "tiger",
+    "offset": {
+      "x": 0,
+      "y": 0
+    },
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c8/Shengjun_Shi_2016_%28Unsplash%29.jpg/640px-Shengjun_Shi_2016_%28Unsplash%29.jpg"
+  }
+]

@@ -10,6 +10,7 @@ export interface MemoryState {
   actualPlayerId: number;
   startTime: Date;
   lastZ: number;
+  pictureList: Picture[];
 }
 
 export interface Card {
@@ -20,8 +21,14 @@ export interface Card {
   position: Vector2;
   zIndex: number;
   backNr: number;
-  imgUrl?: string;
+  picture: Picture;
   color?: string;
+}
+
+export interface Picture {
+  name: string;
+  offset: Vector2;
+  url: string;
 }
 
 export interface GameSettings {

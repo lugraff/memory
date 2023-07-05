@@ -1,4 +1,11 @@
-import { Card, Vector2 } from './models';
+import { Card, Picture, Vector2 } from './models';
+
+const emptyPictureRef: Picture = {
+  name: '-',
+  offset: { x: 0, y: 0 },
+  url: '',
+};
+export const emptyPicture = JSON.parse(JSON.stringify(emptyPictureRef));
 
 const emptyCardRef: Card = {
   id: -1,
@@ -8,6 +15,7 @@ const emptyCardRef: Card = {
   position: { x: 0, y: 0 },
   zIndex: 1,
   backNr: 1,
+  picture: emptyPicture,
 };
 export const emptyCard = JSON.parse(JSON.stringify(emptyCardRef));
 
