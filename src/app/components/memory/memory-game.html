@@ -21,8 +21,8 @@
     class="grid grid-flow-row gap-2 z-10 backdrop-brightness-[0.33] rounded-md p-3 shadow-xl shadow-black animate-slideIn">
     <div class="header p-3">Memory</div>
     <hr>
-    <global-input-number inputType="number" inputFieldWidth="4rem" [disabled]="true" [step]="2" [max]="256" [min]="4"
-      [(ngModel)]="inputCardCount">Karten:</global-input-number>
+    <global-input-number inputType="number" inputFieldWidth="4rem" [disabled]="true" [step]="2"
+      [max]="store.pictureListS().length*2" [min]="4" [(ngModel)]="inputCardCount">Karten:</global-input-number>
     <global-input-number inputType="number" inputFieldWidth="4rem" [disabled]="true" [step]="1" [max]="4" [min]="1"
       [(ngModel)]="inputPlayerCount">Spieler:</global-input-number>
     <global-input-number inputType="number" inputFieldWidth="4rem" [disabled]="true" [step]="1" [max]="4" [min]="0"

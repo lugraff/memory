@@ -225,7 +225,7 @@ export class MemoryStore extends ComponentStore<MemoryState> {
           backNr: backNr,
         }
       );
-      // shuffledPics.pop();
+      shuffledPics.pop();
       positions.pop();
       positions.pop();
     }
