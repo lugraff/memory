@@ -52,7 +52,7 @@ export class MemoryStore extends ComponentStore<MemoryState> {
 
   public loadPictureList(): Observable<Picture[]> {
     if (this.local) {
-      return this.connector.get('/assets/pictureList.json'); //of(pictureList).pipe(delay(Math.random() * 300));
+      return this.connector.get('assets/pictureList.json');
     } else {
       return this.connector.get('');
     }
