@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input, effect, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, effect, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { emptyVector2 } from 'src/app/models/emptyModels';
@@ -19,6 +19,7 @@ export class CardComponent {
   public store = inject(MemoryStore);
   private pointerEvents = inject(PointerEventService);
   private limit = inject(LimitNumber);
+  private detector = inject(ChangeDetectorRef);
 
   @Input() public cardId = -1;
 
@@ -44,7 +45,7 @@ export class CardComponent {
           }
         }
       },
-      { allowSignalWrites: true }
+      { allowSignalWrites: true },
     );
   }
 
@@ -83,6 +84,9 @@ export class CardComponent {
     setTimeout(() => {
       this.store.setCardOpenOrClosed({ cardId: this.cardId, openOrClosed: true });
       this.store.addlastOpenedCardIds(this.cardId);
+      setTimeout(() => {
+        this.detector.detectChanges();
+      }, 0);
       setTimeout(() => {
         this.animOpenStarted.set(false);
         if (this.store.lastOpenedCardIdsS().length === 2) {
@@ -167,5 +171,12 @@ export class CardComponent {
     this.subs.forEach((sub) => {
       sub.unsubscribe();
     });
+  }
+
+  onShowSource() {
+    const sourceUrl = this.store.cardsS()[this.cardId].picture.sourceUrl;
+    if (sourceUrl && sourceUrl !== '') {
+      window.open(this.store.cardsS()[this.cardId].picture.sourceUrl, '_blank');
+    }
   }
 }

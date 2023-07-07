@@ -6,6 +6,7 @@ import { LimitNumber } from '../pipes/limit-number.pipe';
 import { MachineInfoService } from '../services/machine-info-service';
 import { Observable, delay, of, take, takeUntil } from 'rxjs';
 import { ConnectorService } from '../services/connector.service';
+import { generate } from '../utils/color-generator';
 
 @Injectable()
 export class MemoryStore extends ComponentStore<MemoryState> {
@@ -54,7 +55,7 @@ export class MemoryStore extends ComponentStore<MemoryState> {
     if (this.local) {
       return this.connector.get('./assets/pictureList.json');
     } else {
-      return this.connector.get('');
+      return this.connector.get('./assets/pictureList.json');
     }
   }
 
@@ -193,14 +194,7 @@ export class MemoryStore extends ComponentStore<MemoryState> {
     const shuffledPics = shuffleArray(this.pictureListS());
     const backNr = Math.round(Math.random() + 1);
     for (let index = 0; index < cardAmount; index += 2) {
-      const randomColor =
-        '#' +
-        Math.floor(Math.random() * 10) +
-        Math.floor(Math.random() * 10) +
-        Math.floor(Math.random() * 10) +
-        Math.floor(Math.random() * 10) +
-        Math.floor(Math.random() * 10) +
-        Math.floor(Math.random() * 10);
+      const randomColor = generate(Math.random(), 0.8, 0.8);
       newCards.push(
         {
           id: index,
@@ -223,7 +217,7 @@ export class MemoryStore extends ComponentStore<MemoryState> {
           color: randomColor,
           picture: shuffledPics[shuffledPics.length - 1],
           backNr: backNr,
-        }
+        },
       );
       shuffledPics.pop();
       positions.pop();
@@ -257,7 +251,7 @@ export class MemoryStore extends ComponentStore<MemoryState> {
     sidelengthCard: number,
     boardSize: Vector2,
     borderSpace: number,
-    gap: number
+    gap: number,
   ): Vector2[] {
     const positions: Vector2[] = [];
     let newX = borderSpace;

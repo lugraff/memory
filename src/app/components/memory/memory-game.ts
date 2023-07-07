@@ -42,13 +42,14 @@ export class MemoryGameComponent implements OnDestroy {
     }
   }
 
-  //TODO IMG Loading (Pexels,Predefine:WikiCommons,JSON-API,...???)
   //TODO Musik & SFX
   //TODO Settings (Fullscreen, musik, sfx, )
   //TODO Final Animation End Game
   //TODO Backboard(Background)
   //TODO Exit Fullscreen
   //TODO StatusCircle tierchips
+  //TODO Lizenz Button->sourceUrl
+  //TODO Card-Editor
 
   onStartGame() {
     this.store.generateNewGame({

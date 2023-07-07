@@ -7,7 +7,7 @@
     },
     "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Tiger_%28Panthera_tigris%29_in_Disney%27s_Animal_Kingdom.jpg/640px-Tiger_%28Panthera_tigris%29_in_Disney%27s_Animal_Kingdom.jpg",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Tiger_(Panthera_tigris)_in_Disney%27s_Animal_Kingdom.jpg",
-    "lizenz": "CC0"
+    "licence": "CC0"
   },
   {
     "name": "Asiatisches Streifenhörnchen",
@@ -17,7 +17,7 @@
     },
     "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Streifenhoernchen.jpg/450px-Streifenhoernchen.jpg",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Streifenhoernchen.jpg",
-    "lizenz": "CC0"
+    "licence": "CC0"
   },
   {
     "name": "Seestern",
@@ -27,7 +27,7 @@
     },
     "url": "https://upload.wikimedia.org/wikipedia/commons/3/3d/Oreaster_Grahams_Harbour.jpg",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Oreaster_Grahams_Harbour.jpg",
-    "lizenz": "CC0"
+    "licence": "CC0"
   },
   {
     "name": "Meeresschildkröte",
@@ -37,7 +37,7 @@
     },
     "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Sea_turtle_swimming_%28Unsplash%29.jpg/640px-Sea_turtle_swimming_%28Unsplash%29.jpg",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sea_turtle_swimming_(Unsplash).jpg",
-    "lizenz": "CC0"
+    "licence": "CC0"
   },
   {
     "name": "Grauwolf",
@@ -47,7 +47,7 @@
     },
     "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Howlsnow.jpg/486px-Howlsnow.jpg",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Howlsnow.jpg",
-    "lizenz": "CC0"
+    "licence": "CC0"
   },
   {
     "name": "Marienkäfer",
@@ -57,7 +57,7 @@
     },
     "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/Ladybird.jpg/640px-Ladybird.jpg",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ladybird.jpg",
-    "lizenz": "CC0"
+    "licence": "CC0"
   },
   {
     "name": "Afrikanischer Elefant",
@@ -67,7 +67,7 @@
     },
     "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Elephant_and_Calf.jpg/640px-Elephant_and_Calf.jpg",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Elephant_and_Calf.jpg",
-    "lizenz": "CC0"
+    "licence": "CC0"
   },
   {
     "name": "Steinadler",
@@ -77,7 +77,7 @@
     },
     "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Golden_eagle_closeup.jpg/632px-Golden_eagle_closeup.jpg",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Golden_eagle_closeup.jpg",
-    "lizenz": "CC0"
+    "licence": "CC0"
   },
   {
     "name": "Laubfrosch",
@@ -87,7 +87,7 @@
     },
     "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Tree_Frog23411.jpg/640px-Tree_Frog23411.jpg",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Tree_Frog23411.jpg",
-    "lizenz": "CC0"
+    "licence": "CC0"
   },
   {
     "name": "Mississippi Alligator",
@@ -97,16 +97,27 @@
     },
     "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Alligator_mississippiensis_aligator_animal.jpg/640px-Alligator_mississippiensis_aligator_animal.jpg",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Alligator_mississippiensis_aligator_animal.jpg",
-    "lizenz": "CC0"
+    "licence": "CC0"
   },
   {
     "name": "Delfin",
     "offset": {
       "x": 30,
-      "y": 50
+      "y": 80
     },
     "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Dolphin-2074048_1920.jpg/640px-Dolphin-2074048_1920.jpg",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:Dolphin-2074048_1920.jpg",
-    "lizenz": "CC0"
+    "licence": "CC0"
+  },
+  {
+    "name": "Königspinguin",
+    "offset": {
+      "x": 50,
+      "y": 50
+    },
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/King_penguin._Calgary_Zoo._%288067995459%29.jpg/640px-King_penguin._Calgary_Zoo._%288067995459%29.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:King_penguin._Calgary_Zoo._(8067995459).jpg",
+    "licence": "CC0",
+    "author": "Test 123456789"
   }
 ]

@@ -4,25 +4,39 @@
   [ngStyle]="{rotate:randomRotate()+'deg', left:card.position.x+'px', top:card.position.y+'px', zIndex:card.zIndex}"
   class="absolute select-none transform-gpu">
   <div *ngIf="card.open;else cardClosed" [ngStyle]="{
-      backgroundColor:card.color, 
-      width: card.size.x+'px', 
-      height: card.size.y+'px'}"
-    class="flex justify-center items-center duration-300 animate-flip border border-black rounded-md transform-gpu"
+    backgroundColor:card.color, 
+    width: card.size.x+'px', 
+    height: card.size.y+'px'}"
+    class="grid justify-center items-center duration-300 animate-flip border-2 border-black rounded-lg transform-gpu overflow-hidden"
     [ngClass]="animCloseStarted() && card.open ? 'scale-x-0 scale-y-125' : ''">
+    <div class="absolute self-start trapez-top"
+      [ngStyle]="{width:(name.clientWidth+16)+'px', maxWidth:(card.size.x-4)+'px'}">
+      <div #name class="fixed top-0 text-xs pl-1 font-semibold truncate"
+        [ngStyle]="{maxWidth:card.size.x+'px', color:card.color}">
+        {{card.picture.name}}
+      </div>
+    </div>
     <img class="w-full h-full object-cover select-none rounded-md" draggable="false"
       [ngStyle]="{objectPosition: card.picture.offset.x+'% '+card.picture.offset.y+'%'}" [alt]="card.picture.name"
       [src]=card.picture.url>
-
+    <div class="fixed self-end w-full flex justify-end">
+      <div class="trapez-bottom" [ngStyle]="{width:(lizenz.clientWidth+16)+'px', maxWidth:(card.size.x-4)+'px'}">
+        <button #lizenz class="fixed text-xs font-mono font-semibold hover:text-primary pr-1"
+          (pointerdown)="onShowSource()" [ngStyle]="{color:card.color}">
+          {{card.picture.licence}} {{card.picture.author}}
+        </button>
+      </div>
+    </div>
   </div>
 
   <ng-template #cardClosed>
-    <div class="duration-300 animate-flip border border-black rounded-md transform-gpu" [ngStyle]="{
+    <div class="duration-300 animate-flip border-2 border-black rounded-lg transform-gpu" [ngStyle]="{
         backgroundImage: 'url(assets/card_back_'+card.backNr+'.png)', 
-        backgroundSize: card.size.x+'px ' + card.size.y+'px', 
+        backgroundSize: card.size.x+'px ' + card.size.y+'px',
         width: card.size.x+'px', 
         height: card.size.y+'px'}" [ngClass]="animOpenStarted() && !card.open ? 'scale-x-0 scale-y-125' : ''">
       <div
-        class="absolute w-full h-full from-tertiary to-secondary bg-gradient-to-t mix-blend-overlay saturate-150 opacity-90">
+        class="absolute w-full h-full from-tertiary to-secondary bg-gradient-to-t rounded-lg mix-blend-overlay saturate-150 opacity-90">
       </div>
     </div>
   </ng-template>

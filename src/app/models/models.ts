@@ -29,6 +29,9 @@ export interface Picture {
   name: string;
   offset: Vector2;
   url: string;
+  sourceUrl?: string;
+  licence?: string;
+  author?: string;
 }
 
 export interface GameSettings {
