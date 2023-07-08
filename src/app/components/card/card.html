@@ -21,7 +21,7 @@
       [src]=card.picture.url>
     <div class="fixed self-end w-full flex justify-end">
       <div class="trapez-bottom" [ngStyle]="{width:(lizenz.clientWidth+16)+'px', maxWidth:(card.size.x-4)+'px'}">
-        <button #lizenz class="fixed text-xs font-mono font-semibold hover:text-primary pr-1"
+        <button #lizenz class="fixed text-xs font-mono font-semibold hover:text-primary pr-1 truncate"
           (pointerdown)="onShowSource()" [ngStyle]="{color:card.color}">
           {{card.picture.licence}} {{card.picture.author}}
         </button>

@@ -5,7 +5,7 @@ import { MemoryStore } from '../../stores/memory-store';
 import { CardComponent } from '../card/card';
 import { StandardButtonComponent } from '../buttons/standard/standard-button.component';
 import { InputNumberComponent } from '../input-number/input-number.component';
-import { setFullscreen } from 'src/app/utils/screen-settings';
+import { setFullScreen, toggleFullScreen } from 'src/app/utils/screen-settings';
 import { ReplaySubject } from 'rxjs';
 import { MachineInfoService } from 'src/app/services/machine-info-service';
 
@@ -35,7 +35,7 @@ export class MemoryGameComponent implements OnDestroy {
     console.log(event.code);
     switch (event.code) {
       case 'KeyF':
-        setFullscreen();
+        toggleFullScreen();
         break;
       default:
         break;
@@ -62,7 +62,7 @@ export class MemoryGameComponent implements OnDestroy {
       boardSize: { x: innerWidth, y: innerHeight },
     });
     if (this.machineInfo.isMobile) {
-      setFullscreen();
+      setFullScreen(true);
     }
     this.introAnimation();
   }
