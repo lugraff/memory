@@ -44,7 +44,6 @@ export class MemoryGameComponent implements OnDestroy {
 
   //TODO KI Player
   //TODO StateStore
-  //TODO Exit Fullscreen
   //TODO Refactoring
   //TODO Touch Control multitouch?
   //TODO Musik & SFX
@@ -81,6 +80,7 @@ export class MemoryGameComponent implements OnDestroy {
     if (this.store.circleStatusS() === 'gameFinish') {
       this.store.setCircleStatus('');
       this.store.setStatus('menu');
+      setFullScreen(false);
     }
   }
 

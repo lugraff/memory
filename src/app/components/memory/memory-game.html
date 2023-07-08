@@ -52,9 +52,9 @@
       </ng-container>
       <ng-template #finish>
         <div class="text-xs text-warning pt-12">{{inputCardCount}} Karten in {{store.roundS()}} Runden
-          geschafft!</div>
+          aufgedeckt!</div>
         <ng-container *ngFor="let player of store.playerS()">
-          <div class="self-center text-sm text-primary">{{player.name}} hat {{player.points}} {{player.points === 1
+          <div class="self-center text-sm text-primary">{{player.name}} bekommt {{player.points}} {{player.points === 1
             ? 'Punkt':'Punkte'}}.
           </div>
         </ng-container>
