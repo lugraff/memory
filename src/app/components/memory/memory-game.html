@@ -37,7 +37,8 @@
   <ng-container *ngFor="let card of store.cardsS()">
     <app-card [cardId]="card.id" [id]="'card_'+card.id"></app-card>
   </ng-container>
-  <div (click)="onResetGame()" [class.pointer-events-none]="store.circleStatusS()!=='gameFinish'"
+  <div (click)="onResetGame()" [class.pointer-events-none]="store.circleStatusS() !== 'gameFinish'"
+    [class.origin-top-left]="store.circleStatusS() === 'gameFinish' || store.circleStatusS() === 'intro'"
     class="absolute -translate-x-[50%] -translate-y-[50%] select-none z-[9999] duration-300 ease-in-out"
     [ngClass]="store.circleStatusS() === 'scale-x-0'?'scale-x-0 scale-y-110':''"
     [ngStyle]="{left:store.circlePosS().x+'px',top:store.circlePosS().y+'px', scale:store.circleScaleS()}">
