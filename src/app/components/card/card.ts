@@ -164,7 +164,10 @@ export class CardComponent {
   }
 
   public onStartMove(event: MouseEvent | undefined): void {
-    if (event !== undefined && event.button !== 0) {
+    if (event !== undefined) {
+      if (!this.machine.isTouch && event.button === 0) {
+        return;
+      }
       this.store.setCardDuration({ cardId: this.cardId, newDuration: 0 });
       window.getSelection()?.removeAllRanges();
       this.subs.push(this.pointerEvents.mouseMove$.subscribe((event) => this.onMove(event)));
