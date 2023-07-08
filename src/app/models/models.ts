@@ -19,6 +19,8 @@ export interface Card {
   signal: string;
   size: Vector2;
   position: Vector2;
+  duration: number;
+  rotation: number;
   zIndex: number;
   backNr: number;
   picture: Picture;

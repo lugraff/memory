@@ -13,6 +13,8 @@ const emptyCardRef: Card = {
   signal: '',
   size: { x: 0, y: 0 },
   position: { x: 0, y: 0 },
+  duration: 200,
+  rotation: 0,
   zIndex: 1,
   backNr: 1,
   picture: emptyPicture,

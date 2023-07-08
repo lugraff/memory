@@ -4,7 +4,7 @@ import { Card, GameSettings, MemoryState, Picture, Player, Vector2 } from '../mo
 import { shuffleArray } from '../utils/helper-functions';
 import { LimitNumber } from '../pipes/limit-number.pipe';
 import { MachineInfoService } from '../services/machine-info-service';
-import { Observable, delay, of, take, takeUntil } from 'rxjs';
+import { Observable, interval, take } from 'rxjs';
 import { ConnectorService } from '../services/connector.service';
 import { generate } from '../utils/color-generator';
 
@@ -27,6 +27,7 @@ export class MemoryStore extends ComponentStore<MemoryState> {
   ];
 
   private readonly local = true;
+  private loadedCounter = 0;
 
   constructor() {
     super({
@@ -46,16 +47,35 @@ export class MemoryStore extends ComponentStore<MemoryState> {
     this.loadPictureList()
       .pipe(take(1))
       .subscribe((result) => {
-        console.log(result);
         this.patchState({ pictureList: result });
+        setTimeout(() => {
+          this.loadImages();
+        }, 1000);
       });
   }
 
-  public loadPictureList(): Observable<Picture[]> {
+  private loadPictureList(): Observable<Picture[]> {
     if (this.local) {
       return this.connector.get('./assets/pictureList.json');
     } else {
       return this.connector.get('./assets/pictureList.json');
+    }
+  }
+
+  private loadImages() {
+    for (let i = 0; i < this.pictureListS().length; i++) {
+      const img = new Image();
+      img.onload = () => {
+        this.loaded();
+      };
+      img.src = this.pictureListS()[i].url;
+    }
+  }
+
+  private loaded() {
+    this.loadedCounter++;
+    if (this.pictureListS().length == this.loadedCounter) {
+      console.log('ALL Loaded');
     }
   }
 
@@ -75,6 +95,18 @@ export class MemoryStore extends ComponentStore<MemoryState> {
   public setCardPosition = this.updater((state, prop: { cardId: number; newPosition: Vector2 }) => {
     const cards = state.cards;
     cards[prop.cardId].position = prop.newPosition;
+    return { ...state, cards: cards };
+  });
+
+  public setCardDuration = this.updater((state, prop: { cardId: number; newDuration: number }) => {
+    const cards = state.cards;
+    cards[prop.cardId].duration = prop.newDuration;
+    return { ...state, cards: cards };
+  });
+
+  public setCardRotation = this.updater((state, prop: { cardId: number; newRotation: number }) => {
+    const cards = state.cards;
+    cards[prop.cardId].rotation = prop.newRotation;
     return { ...state, cards: cards };
   });
 
@@ -109,6 +141,9 @@ export class MemoryStore extends ComponentStore<MemoryState> {
 
   public statusS = this.selectSignal((state) => {
     return state.status;
+  });
+  public setStatus = this.updater((state, status: string) => {
+    return { ...state, status };
   });
 
   public circleStatusS = this.selectSignal((state) => {
@@ -191,7 +226,7 @@ export class MemoryStore extends ComponentStore<MemoryState> {
     const gap = 16;
     const sidelengthCard = this.calcCardSize(cardAmount, boardSize, borderSpace, gap);
     const positions: Vector2[] = this.calcPositions(cardAmount, sidelengthCard, boardSize, borderSpace, gap);
-    const shuffledPics = shuffleArray(this.pictureListS());
+    const shuffledPics = shuffleArray([...this.pictureListS()]);
     const backNr = Math.round(Math.random() + 1);
     for (let index = 0; index < cardAmount; index += 2) {
       const randomColor = generate(Math.random(), 0.8, 0.8);
@@ -202,6 +237,8 @@ export class MemoryStore extends ComponentStore<MemoryState> {
           signal: '',
           size: { x: sidelengthCard, y: sidelengthCard },
           position: { x: positions[positions.length - 1].x, y: positions[positions.length - 1].y },
+          duration: 200,
+          rotation: (Math.random() - 0.5) * 9,
           zIndex: 0,
           color: randomColor,
           picture: shuffledPics[shuffledPics.length - 1],
@@ -213,6 +250,8 @@ export class MemoryStore extends ComponentStore<MemoryState> {
           signal: '',
           size: { x: sidelengthCard, y: sidelengthCard },
           position: { x: positions[positions.length - 2].x, y: positions[positions.length - 2].y },
+          duration: 200,
+          rotation: (Math.random() - 0.5) * 9,
           zIndex: 0,
           color: randomColor,
           picture: shuffledPics[shuffledPics.length - 1],
@@ -267,5 +306,16 @@ export class MemoryStore extends ComponentStore<MemoryState> {
     }
     shuffleArray(positions);
     return positions;
+  }
+
+  startOutroAnimation(): void {
+    for (const card of this.cardsS()) {
+      this.setCardPosition({ cardId: card.id, newPosition: { x: card.position.x, y: innerHeight + card.size.y } });
+      this.setCardDuration({ cardId: card.id, newDuration: 4000 });
+      this.setCardRotation({ cardId: card.id, newRotation: (Math.random() - 0.5) * 700 });
+    }
+    setTimeout(() => {
+      this.setStatus('menu');
+    }, 4000);
   }
 }

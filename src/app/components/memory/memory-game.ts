@@ -42,14 +42,15 @@ export class MemoryGameComponent implements OnDestroy {
     }
   }
 
+  //TODO Desktop Controls (left & rightClick) / Touch Control (Double and single + multitouch?)
+  //TODO StateStore
+  //TODO Exit Fullscreen
   //TODO Musik & SFX
   //TODO Settings (Fullscreen, musik, sfx, )
-  //TODO Final Animation End Game
-  //TODO Backboard(Background)
-  //TODO Exit Fullscreen
   //TODO StatusCircle tierchips
-  //TODO Lizenz Button->sourceUrl
   //TODO Card-Editor
+  //TODO PictureList Importer & UrlLoader
+  //TODO Backboard(Background)
 
   onStartGame() {
     this.store.generateNewGame({

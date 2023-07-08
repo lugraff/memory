@@ -27,9 +27,7 @@ export class CardComponent {
 
   public animOpenStarted = signal(false);
   public animCloseStarted = signal(false);
-  public randomRotate = signal((Math.random() - 0.5) * 9);
   public activeScale = signal(1);
-  public moving = signal(false);
   public moveOffset = signal<Vector2>(emptyVector2);
 
   constructor() {
@@ -53,7 +51,7 @@ export class CardComponent {
     this.store.setCardIndex(this.cardId);
     this.activeScale.set(1.1);
     if (!this.animOpenStarted() && !this.animCloseStarted()) {
-      this.randomRotate.set((Math.random() - 0.5) * 9);
+      this.store.setCardRotation({ cardId: this.cardId, newRotation: (Math.random() - 0.5) * 9 });
       this.onStartMove(event);
     }
   }
@@ -64,7 +62,7 @@ export class CardComponent {
     }
     this.activeScale.set(1);
     if (!this.animOpenStarted() && !this.animCloseStarted()) {
-      this.randomRotate.set((Math.random() - 0.5) * 9);
+      this.store.setCardRotation({ cardId: this.cardId, newRotation: (Math.random() - 0.5) * 9 });
       if (this.store.lastOpenedCardIdsS().length < 2) {
         if (this.store.cardsS()[this.cardId].open) {
           //this.CloseAnimation();
@@ -114,7 +112,13 @@ export class CardComponent {
                 this.closeAnimation();
               }
             }
-            this.nextPlayerAnimation();
+            for (const card of this.store.cardsS()) {
+              if (!card.open) {
+                this.nextPlayerAnimation();
+                return;
+              }
+            }
+            this.store.startOutroAnimation();
           }, 300);
         }
       }, 300);
@@ -145,7 +149,7 @@ export class CardComponent {
 
   public onStartMove(event: MouseEvent | undefined): void {
     if (event !== undefined) {
-      this.moving.set(true);
+      this.store.setCardDuration({ cardId: this.cardId, newDuration: 0 });
       window.getSelection()?.removeAllRanges();
       this.subs.push(this.pointerEvents.mouseMove$.subscribe((event) => this.onMove(event)));
       this.subs.push(this.pointerEvents.mouseUp$.subscribe(() => this.onEnd()));
@@ -154,7 +158,7 @@ export class CardComponent {
   }
 
   public onMove(event: MouseEvent | undefined): void {
-    if (!this.moving() || event === undefined) {
+    if (this.store.cardsS()[this.cardId].duration > 0 || event === undefined) {
       return;
     }
     let newX = event.clientX - this.moveOffset().x;
@@ -166,7 +170,7 @@ export class CardComponent {
 
   public onEnd(): void {
     window.getSelection()?.removeAllRanges();
-    this.moving.set(false);
+    this.store.setCardDuration({ cardId: this.cardId, newDuration: 200 });
     this.activeScale.set(1);
     this.subs.forEach((sub) => {
       sub.unsubscribe();
