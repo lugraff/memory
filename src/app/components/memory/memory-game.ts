@@ -69,10 +69,17 @@ export class MemoryGameComponent implements OnDestroy {
     this.store.resetlastOpenedCardIds();
     this.store.setCircleStatus('intro');
     setTimeout(() => {
-      this.store.setCirclePos({ x: 99, y: 99 });
-      this.store.setCircleScale(1);
+      this.store.setCirclePos({ x: innerWidth - 132, y: innerHeight - 132 });
+      this.store.setCircleScale(0.5);
       this.store.setCircleStatus('');
     }, 1500);
+  }
+
+  public onResetGame(): void {
+    if (this.store.circleStatusS() === 'gameFinish') {
+      this.store.setCircleStatus('');
+      this.store.setStatus('menu');
+    }
   }
 
   ngOnDestroy(): void {

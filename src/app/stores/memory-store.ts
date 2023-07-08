@@ -38,7 +38,7 @@ export class MemoryStore extends ComponentStore<MemoryState> {
       startTime: new Date(),
       status: 'menu',
       circleStatus: '',
-      circlePos: { x: 60, y: 60 },
+      circlePos: { x: innerWidth * 0.5, y: innerHeight * 0.5 },
       circleScale: 1.5,
       actualPlayerId: 0,
       lastZ: 1,
@@ -309,13 +309,18 @@ export class MemoryStore extends ComponentStore<MemoryState> {
   }
 
   startOutroAnimation(): void {
-    for (const card of this.cardsS()) {
-      this.setCardPosition({ cardId: card.id, newPosition: { x: card.position.x, y: innerHeight + card.size.y } });
-      this.setCardDuration({ cardId: card.id, newDuration: 4000 });
-      this.setCardRotation({ cardId: card.id, newRotation: (Math.random() - 0.5) * 700 });
-    }
+    this.setCircleStatus('gameFinish');
+    this.setCirclePos({ x: innerWidth * 0.5, y: innerHeight * 0.5 });
+    this.setCircleScale(2);
     setTimeout(() => {
-      this.setStatus('menu');
-    }, 4000);
+      for (const card of this.cardsS()) {
+        this.setCardPosition({
+          cardId: card.id,
+          newPosition: { x: card.position.x + (Math.random() - 0.5) * 42, y: innerHeight + card.size.y * 2 },
+        });
+        this.setCardDuration({ cardId: card.id, newDuration: 3333 });
+        this.setCardRotation({ cardId: card.id, newRotation: (Math.random() - 0.5) * 700 });
+      }
+    }, 1000);
   }
 }
