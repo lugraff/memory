@@ -43,8 +43,10 @@ export class MemoryGameComponent implements OnDestroy {
   }
 
   //TODO Desktop Controls (left & rightClick) / Touch Control (Double and single + multitouch?)
+  //TODO KI Player
   //TODO StateStore
   //TODO Exit Fullscreen
+  //TODO Refactoring
   //TODO Musik & SFX
   //TODO Settings (Fullscreen, musik, sfx, )
   //TODO StatusCircle tierchips

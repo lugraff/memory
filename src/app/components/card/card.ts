@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { emptyVector2 } from 'src/app/models/emptyModels';
 import { Vector2 } from 'src/app/models/models';
 import { LimitNumber } from 'src/app/pipes/limit-number.pipe';
+import { MachineInfoService } from 'src/app/services/machine-info-service';
 import { PointerEventService } from 'src/app/services/pointer-events-service';
 import { MemoryStore } from 'src/app/stores/memory-store';
 
@@ -20,6 +21,7 @@ export class CardComponent {
   private pointerEvents = inject(PointerEventService);
   private limit = inject(LimitNumber);
   private detector = inject(ChangeDetectorRef);
+  private machine = inject(MachineInfoService);
 
   @Input() public cardId = -1;
 
@@ -56,7 +58,21 @@ export class CardComponent {
     }
   }
 
-  public onDoubleClick() {
+  public onDoubleClick(): void {
+    if (this.machine.isTouch) {
+      this.onAction();
+    }
+  }
+
+  public onClick(event: MouseEvent): void {
+    if (!this.machine.isTouch) {
+      if (event.button === 0) {
+        this.onAction();
+      }
+    }
+  }
+
+  private onAction(): void {
     if (this.store.lastOpenedCardIdsS().includes(this.cardId)) {
       return;
     }
@@ -148,7 +164,7 @@ export class CardComponent {
   }
 
   public onStartMove(event: MouseEvent | undefined): void {
-    if (event !== undefined) {
+    if (event !== undefined && event.button !== 0) {
       this.store.setCardDuration({ cardId: this.cardId, newDuration: 0 });
       window.getSelection()?.removeAllRanges();
       this.subs.push(this.pointerEvents.mouseMove$.subscribe((event) => this.onMove(event)));

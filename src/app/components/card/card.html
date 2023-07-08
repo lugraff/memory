@@ -1,5 +1,6 @@
 <div *ngIf="store.state().cards[this.cardId] as card" (pointerdown)="onDown($event)" (pointerleave)="onLeave()"
-  (dblclick)="onDoubleClick()" [style.transform]="'scale(' + activeScale() + ',' + activeScale() + ')'"
+  (dblclick)="onDoubleClick()" (click)="onClick($event)"
+  [style.transform]="'scale(' + activeScale() + ',' + activeScale() + ')'"
   [ngStyle]="{rotate:card.rotation +'deg', left:card.position.x+'px', top:card.position.y+'px', zIndex:card.zIndex, transitionDuration:card.duration+'ms'}"
   class="absolute select-none transform-gpu">
   <div *ngIf="card.open;else cardClosed" [ngStyle]="{

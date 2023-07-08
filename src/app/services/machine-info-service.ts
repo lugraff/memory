@@ -6,7 +6,16 @@ import { Injectable } from '@angular/core';
 export class MachineInfoService {
   private readonly regex_mobile = new RegExp(/Android|BlackBerry|iPhone|iPad|iPod|Opera Mini|IEMobile/, 'i');
   public readonly isMobile = this.regex_mobile.test(window.navigator.userAgent);
+  public readonly isTouch = this.checkDeviceTouch();
   public readonly browser = this.getBrowserName();
+
+  private checkDeviceTouch() {
+    if ('ontouchstart' in document.documentElement) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 
   private getBrowserName() {
     const agent = window.navigator.userAgent.toLowerCase();
