@@ -117,7 +117,56 @@
     },
     "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7f/King_penguin._Calgary_Zoo._%288067995459%29.jpg/640px-King_penguin._Calgary_Zoo._%288067995459%29.jpg",
     "sourceUrl": "https://commons.wikimedia.org/wiki/File:King_penguin._Calgary_Zoo._(8067995459).jpg",
-    "licence": "CC0",
-    "author": ""
+    "licence": "CC0"
+  },
+  {
+    "name": "Dromedar",
+    "offset": {
+      "x": 50,
+      "y": 50
+    },
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/07._Camel_Profile%2C_near_Silverton%2C_NSW%2C_07.07.2007.jpg/624px-07._Camel_Profile%2C_near_Silverton%2C_NSW%2C_07.07.2007.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:07._Camel_Profile,_near_Silverton,_NSW,_07.07.2007.jpg",
+    "licence": "CC0"
+  },
+  {
+    "name": "Wildschwein",
+    "offset": {
+      "x": 50,
+      "y": 50
+    },
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Wildschwein_Sus_scrofa.jpg/640px-Wildschwein_Sus_scrofa.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Wildschwein_Sus_scrofa.jpg",
+    "licence": "CC0"
+  },
+  {
+    "name": "Sekretär",
+    "offset": {
+      "x": 50,
+      "y": 50
+    },
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Secretarybird_%2816420981497%29.jpg/640px-Secretarybird_%2816420981497%29.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Secretarybird_(16420981497).jpg",
+    "licence": "CC0"
+  },
+  {
+    "name": "Gorilla",
+    "offset": {
+      "x": 50,
+      "y": 50
+    },
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/USAID_Measuring_Impact_Conservation_Enterprise_Retrospective_%28Uganda%3B_International_Gorilla_Conservation_Program%29_%2839396354245%29.jpg/640px-USAID_Measuring_Impact_Conservation_Enterprise_Retrospective_%28Uganda%3B_International_Gorilla_Conservation_Program%29_%2839396354245%29.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:USAID_Measuring_Impact_Conservation_Enterprise_Retrospective_(Uganda;_International_Gorilla_Conservation_Program)_(39396354245).jpg",
+    "licence": "CC0"
+  },
+  {
+    "name": "Rotfuchs",
+    "offset": {
+      "x": 50,
+      "y": 50
+    },
+    "url": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Vulpes_vulpes_ssp_fulvus.jpg/640px-Vulpes_vulpes_ssp_fulvus.jpg",
+    "sourceUrl": "https://commons.wikimedia.org/wiki/File:Vulpes_vulpes_ssp_fulvus.jpg",
+    "licence": "CC0"
   }
 ]
