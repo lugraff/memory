@@ -4,7 +4,7 @@ import { Card, GameSettings, MemoryState, Picture, Player, Vector2 } from '../mo
 import { shuffleArray } from '../utils/helper-functions';
 import { LimitNumber } from '../pipes/limit-number.pipe';
 import { MachineInfoService } from '../services/machine-info-service';
-import { Observable, interval, take } from 'rxjs';
+import { Observable, delay, interval, take } from 'rxjs';
 import { ConnectorService } from '../services/connector.service';
 import { generate } from '../utils/color-generator';
 
@@ -28,6 +28,7 @@ export class MemoryStore extends ComponentStore<MemoryState> {
 
   private readonly local = true;
   private loadedCounter = 0;
+  private intervalTimer = interval(200);
 
   constructor() {
     super({
@@ -37,6 +38,7 @@ export class MemoryStore extends ComponentStore<MemoryState> {
       lastOpenedCardIds: [],
       startTime: new Date(),
       status: 'menu',
+      turnAllowed: true,
       circleStatus: '',
       circlePos: { x: innerWidth * 0.5, y: innerHeight * 0.5 },
       circleScale: 1.5,
@@ -146,6 +148,13 @@ export class MemoryStore extends ComponentStore<MemoryState> {
     return { ...state, status };
   });
 
+  public turnAllowedS = this.selectSignal((state) => {
+    return state.turnAllowed;
+  });
+  public setTurnAllowed = this.updater((state, turnAllowed: boolean) => {
+    return { ...state, turnAllowed };
+  });
+
   public circleStatusS = this.selectSignal((state) => {
     return state.circleStatus;
   });
@@ -180,8 +189,29 @@ export class MemoryStore extends ComponentStore<MemoryState> {
   });
   public nextPlayer = this.updater((state) => {
     const nextPlayer = this.limit.transform(++state.actualPlayerId, 0, state.player.length - 1, true);
+    if (state.player[nextPlayer].ki) {
+      this.playKiTurn();
+    }
     return { ...state, actualPlayerId: nextPlayer };
   });
+
+  public playKiTurn(): void {
+    let firstCard = Math.floor(Math.random() * this.cardsS().length);
+    while (this.cardsS()[firstCard].open) {
+      firstCard = Math.floor(Math.random() * this.cardsS().length);
+    }
+    let secondCard = Math.floor(Math.random() * this.cardsS().length);
+    while (firstCard === secondCard || this.cardsS()[secondCard].open) {
+      secondCard = Math.floor(Math.random() * this.cardsS().length);
+    }
+    this.setCardSignal({ cardId: firstCard, signal: 'open' });
+    const secondCheck$ = this.intervalTimer.subscribe(() => {
+      if (this.turnAllowedS()) {
+        this.setCardSignal({ cardId: secondCard, signal: 'open' });
+        secondCheck$.unsubscribe();
+      }
+    });
+  }
 
   public roundS = this.selectSignal((state) => {
     return state.round;

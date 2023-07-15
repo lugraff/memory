@@ -41,6 +41,10 @@ export class CardComponent {
               this.closeAnimation();
               this.store.setCardSignal({ cardId: this.cardId, signal: '' });
             }
+            if (card.signal === 'open') {
+              this.onAction();
+              this.store.setCardSignal({ cardId: this.cardId, signal: '' });
+            }
             break;
           }
         }
@@ -73,7 +77,7 @@ export class CardComponent {
   }
 
   private onAction(): void {
-    if (this.store.lastOpenedCardIdsS().includes(this.cardId)) {
+    if (!this.store.turnAllowedS() || this.store.lastOpenedCardIdsS().includes(this.cardId)) {
       return;
     }
     this.activeScale.set(1);
@@ -94,6 +98,7 @@ export class CardComponent {
   }
 
   private openAnimation(): void {
+    this.store.setTurnAllowed(false);
     this.animOpenStarted.set(true);
     setTimeout(() => {
       this.store.setCardOpenOrClosed({ cardId: this.cardId, openOrClosed: true });
@@ -103,6 +108,7 @@ export class CardComponent {
       }, 0);
       setTimeout(() => {
         this.animOpenStarted.set(false);
+        this.store.setTurnAllowed(true);
         if (this.store.lastOpenedCardIdsS().length === 2) {
           setTimeout(() => {
             if (this.cardId % 2 !== 0) {

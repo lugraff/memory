@@ -54,15 +54,15 @@ export class MemoryGameComponent implements OnDestroy {
   //TODO Backboard(Background)
 
   onStartGame() {
+    if (this.machineInfo.isMobile) {
+      setFullScreen(true);
+    }
     this.store.generateNewGame({
       cardAmount: this.inputCardCount,
       playerCount: this.inputPlayerCount,
       kiCount: this.inputKiCount,
       boardSize: { x: innerWidth, y: innerHeight },
     });
-    if (this.machineInfo.isMobile) {
-      setFullScreen(true);
-    }
     this.introAnimation();
   }
 
@@ -73,6 +73,9 @@ export class MemoryGameComponent implements OnDestroy {
       this.store.setCirclePos({ x: innerWidth - 132, y: innerHeight - 132 });
       this.store.setCircleScale(0.5);
       this.store.setCircleStatus('');
+      if (this.store.playerS()[this.store.actualPlayerIdS()].ki) {
+        this.store.playKiTurn();
+      }
     }, 1500);
   }
 

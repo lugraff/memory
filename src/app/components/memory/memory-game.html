@@ -23,11 +23,11 @@
     <hr>
     <global-input-number inputType="number" inputFieldWidth="4rem" [disabled]="true" [step]="2"
       [max]="store.pictureListS().length*2" [min]="4" [(ngModel)]="inputCardCount">Karten:</global-input-number>
-    <global-input-number inputType="number" inputFieldWidth="4rem" [disabled]="true" [step]="1" [max]="4" [min]="1"
+    <global-input-number inputType="number" inputFieldWidth="4rem" [disabled]="true" [step]="1" [max]="4" [min]="0"
       [(ngModel)]="inputPlayerCount">Spieler:</global-input-number>
-    <!-- <global-input-number inputType="number" inputFieldWidth="4rem" [disabled]="true" [step]="1" [max]="4" [min]="0"
+    <global-input-number inputType="number" inputFieldWidth="4rem" [disabled]="true" [step]="1" [max]="4" [min]="0"
       [(ngModel)]="inputKiCount">KI
-      Spieler:</global-input-number> -->
+      Spieler:</global-input-number>
     <hr>
     <button standard (click)="onStartGame()">Spiel starten</button>
   </div>
