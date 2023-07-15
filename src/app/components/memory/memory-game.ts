@@ -42,7 +42,9 @@ export class MemoryGameComponent implements OnDestroy {
     }
   }
 
-  //TODO KI Player
+  //TODO Circle Animation Next-Player & Color
+  //TODO Punkte Vergleichs Anzeige
+  //TODO KI Modes
   //TODO StateStore
   //TODO Refactoring
   //TODO Touch Control multitouch?

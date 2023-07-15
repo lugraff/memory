@@ -233,16 +233,20 @@ export class MemoryStore extends ComponentStore<MemoryState> {
 
   private generatePlayer(playerAmount: number): Player[] {
     const player: Player[] = [];
+    const colors: string[] = ['red', 'green', 'blue', 'yellow'];
+    shuffleArray(colors);
     for (let index = 0; index < playerAmount; index++) {
-      player.push({ name: 'Spieler ' + (index + 1), id: index, color: '#5576a4', ki: false, points: 0 });
+      player.push({ name: 'Spieler ' + (index + 1), id: index, color: colors[index], ki: false, points: 0 });
     }
     return player;
   }
 
   private generateKI(kiAmount: number, playerCount: number): Player[] {
     const ki: Player[] = [];
+    const colors: string[] = ['cyan', 'purple', 'white', 'orange'];
+    shuffleArray(colors);
     for (let index = 0; index < kiAmount; index++) {
-      ki.push({ name: 'KI ' + (index + 1), id: index + playerCount, color: '#90a257', ki: true, points: 0 });
+      ki.push({ name: 'KI ' + (index + 1), id: index + playerCount, color: colors[index], ki: true, points: 0 });
     }
     return ki;
   }

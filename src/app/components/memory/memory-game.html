@@ -42,9 +42,8 @@
     class="absolute -translate-x-[50%] -translate-y-[50%] select-none z-[9999] duration-300 ease-in-out"
     [ngClass]="store.circleStatusS() === 'scale-x-0'?'scale-x-0 scale-y-110':''"
     [ngStyle]="{left:store.circlePosS().x+'px',top:store.circlePosS().y+'px', scale:store.circleScaleS()}">
-    <div
-      class="w-64 h-64 rounded-full shadow-md shadow-black backdrop-brightness-[0.33] p-1 grid text-center font-semibold overflow-hidden animate-zoomIn">
-      <!-- , backgroundImage: 'url(assets/deer.png)',backgroundSize: '128px 128px' -->
+    <div [ngStyle]="{borderColor:store.playerS()[store.actualPlayerIdS()].color}"
+      class="w-64 h-64 rounded-full shadow-md shadow-black backdrop-brightness-[0.33] border-4 p-1 grid text-center font-semibold overflow-hidden animate-zoomIn">
       <ng-container *ngIf="store.circleStatusS() !== 'gameFinish';else finish">
         <div class="text-xl pt-3">Runde {{ store.roundS() }}</div>
         <div class="self-center text-[3rem] text-primary">{{ store.playerS()[store.actualPlayerIdS()].points }}</div>
