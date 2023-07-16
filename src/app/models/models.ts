@@ -1,6 +1,7 @@
 export interface MemoryState {
   status: string;
   turnAllowed: boolean;
+  playAgainMode: boolean;
   circleStatus: string;
   circlePos: Vector2;
   circleScale: number;

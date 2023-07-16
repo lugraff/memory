@@ -13,8 +13,8 @@ import {
   ChangeDetectionStrategy,
 } from '@angular/core';
 import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { IconComponent } from '../icon/icon.component';
-import { StandardButtonComponent } from '../buttons/standard/standard-button.component';
+import { IconComponent } from '../../icon/icon.component';
+import { StandardButtonComponent } from '../../buttons/standard/standard-button.component';
 
 @Directive({
   selector: '[globalOnlyNumbers]',

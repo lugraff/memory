@@ -111,6 +111,7 @@ export class CardComponent {
         this.store.setTurnAllowed(true);
         if (this.store.lastOpenedCardIdsS().length === 2) {
           setTimeout(() => {
+            let nextPlayer = true;
             if (this.cardId % 2 !== 0) {
               if (this.store.cardsS()[this.cardId - 1].open === true) {
                 this.store.setCardPosition({
@@ -118,6 +119,9 @@ export class CardComponent {
                   newPosition: this.store.cardsS()[this.cardId - 1].position,
                 });
                 this.store.addPoint(this.store.actualPlayerIdS());
+                if (this.store.playAgainModeS()) {
+                  nextPlayer = false;
+                }
               } else {
                 this.store.setCardSignal({ cardId: this.store.lastOpenedCardIdsS()[0], signal: 'close' });
                 this.closeAnimation();
@@ -129,6 +133,9 @@ export class CardComponent {
                   newPosition: this.store.cardsS()[this.cardId + 1].position,
                 });
                 this.store.addPoint(this.store.actualPlayerIdS());
+                if (this.store.playAgainModeS()) {
+                  nextPlayer = false;
+                }
               } else {
                 this.store.setCardSignal({ cardId: this.store.lastOpenedCardIdsS()[0], signal: 'close' });
                 this.closeAnimation();
@@ -136,7 +143,7 @@ export class CardComponent {
             }
             for (const card of this.store.cardsS()) {
               if (!card.open) {
-                this.nextPlayerAnimation();
+                this.nextPlayerAnimation(nextPlayer);
                 return;
               }
             }
@@ -147,14 +154,18 @@ export class CardComponent {
     }, 300);
   }
 
-  private nextPlayerAnimation(): void {
+  private nextPlayerAnimation(nextPlayer: boolean): void {
     setTimeout(() => {
-      this.store.setCircleStatus('scale-x-0');
+      if (nextPlayer) {
+        this.store.setCircleStatus('scale-x-0');
+      }
       setTimeout(() => {
         this.store.setCircleStatus('');
         this.store.resetlastOpenedCardIds();
+        if (nextPlayer) {
+          this.store.nextPlayer();
+        }
         this.store.nextRound();
-        this.store.nextPlayer();
       }, 300);
     }, 500);
   }

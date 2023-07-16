@@ -4,15 +4,24 @@ import { FormsModule } from '@angular/forms';
 import { MemoryStore } from '../../stores/memory-store';
 import { CardComponent } from '../card/card';
 import { StandardButtonComponent } from '../buttons/standard/standard-button.component';
-import { InputNumberComponent } from '../input-number/input-number.component';
+import { InputNumberComponent } from '../inputs/input-number/input-number.component';
 import { setFullScreen, toggleFullScreen } from 'src/app/utils/screen-settings';
 import { ReplaySubject } from 'rxjs';
 import { MachineInfoService } from 'src/app/services/machine-info-service';
+import { InputCheckboxComponent } from '../inputs/input-checkbox/input-checkbox.component';
 
 @Component({
   selector: 'app-memory-game',
   providers: [MemoryStore],
-  imports: [CommonModule, FormsModule, NgOptimizedImage, CardComponent, StandardButtonComponent, InputNumberComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    NgOptimizedImage,
+    CardComponent,
+    StandardButtonComponent,
+    InputNumberComponent,
+    InputCheckboxComponent,
+  ],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './memory-game.html',
@@ -42,7 +51,10 @@ export class MemoryGameComponent implements OnDestroy {
     }
   }
 
-  //TODO Circle Animation Next-Player & Color
+  //TODO Player Creation (Color, Name)
+  //TODO KI Creation (Color, Level)
+  //TODO Game-Modes (take Again,...)
+  //TODO Circle Animation Next-Player
   //TODO Punkte Vergleichs Anzeige
   //TODO KI Modes
   //TODO StateStore
@@ -79,6 +91,10 @@ export class MemoryGameComponent implements OnDestroy {
         this.store.playKiTurn();
       }
     }, 1500);
+  }
+
+  public onCheckBoxChange(checked: boolean): void {
+    this.store.setPlayAgainMode(checked);
   }
 
   public onResetGame(): void {

@@ -39,6 +39,7 @@ export class MemoryStore extends ComponentStore<MemoryState> {
       startTime: new Date(),
       status: 'menu',
       turnAllowed: true,
+      playAgainMode: false,
       circleStatus: '',
       circlePos: { x: innerWidth * 0.5, y: innerHeight * 0.5 },
       circleScale: 1.5,
@@ -155,6 +156,13 @@ export class MemoryStore extends ComponentStore<MemoryState> {
     return { ...state, turnAllowed };
   });
 
+  public playAgainModeS = this.selectSignal((state) => {
+    return state.playAgainMode;
+  });
+  public setPlayAgainMode = this.updater((state, playAgainMode: boolean) => {
+    return { ...state, playAgainMode };
+  });
+
   public circleStatusS = this.selectSignal((state) => {
     return state.circleStatus;
   });
@@ -189,9 +197,6 @@ export class MemoryStore extends ComponentStore<MemoryState> {
   });
   public nextPlayer = this.updater((state) => {
     const nextPlayer = this.limit.transform(++state.actualPlayerId, 0, state.player.length - 1, true);
-    if (state.player[nextPlayer].ki) {
-      this.playKiTurn();
-    }
     return { ...state, actualPlayerId: nextPlayer };
   });
 
@@ -217,6 +222,9 @@ export class MemoryStore extends ComponentStore<MemoryState> {
     return state.round;
   });
   public nextRound = this.updater((state) => {
+    if (state.player[this.actualPlayerIdS()].ki) {
+      this.playKiTurn();
+    }
     return { ...state, round: state.round + 1 };
   });
 

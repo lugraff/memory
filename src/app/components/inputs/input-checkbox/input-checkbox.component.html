@@ -1,0 +1,19 @@
+<div (pointerenter)="onEnter()" (pointerleave)="onLeave()" (click)="InputField.focus()"
+  [ngClass]="disabled ? 'cursor-not-allowed brightness-75' : 'cursor-pointer' "
+  class="flex overflow-hidden cursor-pointer select-none w-fit">
+  <div class="flex items-center px-1" (click)="onToggle()">
+    <!-- class="self-center w-5 h-5 m-1 rounded-md outline-none cursor-pointer accent-primary" -->
+    <div *ngIf="checked" class="absolute h-6 w-6 animate-fadeIn">
+      <global-icon icon="octCheck" color="primary" strokeWidth="2">
+      </global-icon>
+    </div>
+    <div class="border border-subtle rounded-md h-6 w-6 duration-200" [ngClass]="hover && !disabled ? 'bg-bgB' : '' ">
+    </div>
+    <div class="p-1 whitespace-nowrap text-secondary">
+      <ng-content></ng-content>
+    </div>
+
+  </div>
+</div>
+<input #InputField type="checkbox" [(ngModel)]="checked" (ngModelChange)="onChange($event)" (blur)="onTouched()"
+  (focus)="onGetFocus()" [disabled]="disabled" class="invisible fixed left-0 top-0 pointer-events-none" />
