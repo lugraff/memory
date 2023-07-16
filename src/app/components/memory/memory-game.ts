@@ -51,18 +51,16 @@ export class MemoryGameComponent implements OnDestroy {
     }
   }
 
+  //TODO Refactoring
+  //TODO Window Resize Response
   //TODO Player Creation (Color, Name)
   //TODO KI Creation (Color, Level)
-  //TODO Game-Modes (take Again,...)
-  //TODO Circle Animation Next-Player
   //TODO Punkte Vergleichs Anzeige
   //TODO KI Modes
-  //TODO StateStore
-  //TODO Refactoring
+  //TODO local StateStore
   //TODO Touch Control multitouch?
   //TODO Musik & SFX
   //TODO Settings (Fullscreen, musik, sfx, )
-  //TODO StatusCircle tierchips
   //TODO Card-Editor
   //TODO PictureList Importer & UrlLoader
   //TODO Backboard(Background)

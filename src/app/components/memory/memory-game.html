@@ -28,7 +28,8 @@
     <global-input-number inputType="number" inputFieldWidth="4rem" [disabled]="true" [step]="1" [max]="4" [min]="0"
       [(ngModel)]="inputKiCount">KI
       Spieler:</global-input-number>
-    <global-input-checkbox (whenChanged)="onCheckBoxChange($event)">Zieh-Nochmal-Modus</global-input-checkbox>
+    <global-input-checkbox [checked]="store.playAgainModeS()"
+      (whenChanged)="onCheckBoxChange($event)">Zieh-Nochmal-Modus</global-input-checkbox>
     <hr>
     <button standard (click)="onStartGame()">Spiel starten</button>
   </div>

@@ -7,7 +7,7 @@ import { MachineInfoService } from './services/machine-info-service';
   imports: [RouterModule],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `<div class="w-screen h-screen bg-bgA flex text-white selection:bg-selection">
+  template: `<div class="w-screen h-screen from-bgA to-bgB bg-gradient-to-t flex text-white selection:bg-selection">
     <div class="grow w-full h-full">
       <router-outlet></router-outlet>
     </div>
