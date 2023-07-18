@@ -49,8 +49,9 @@ export interface Player {
   id: number;
   name: string;
   color: string;
-  ki: boolean;
   points: number;
+  ki: boolean;
+  kiMemory: number[];
 }
 
 export interface Vector2 {

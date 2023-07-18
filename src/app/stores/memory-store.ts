@@ -134,6 +134,27 @@ export class MemoryStore extends ComponentStore<MemoryState> {
     return { ...state, lastOpenedCardIds: [] };
   });
 
+  public addMemory = this.updater((state, cardId: number) => {
+    const players = state.player;
+    for (const player of players) {
+      if (player.ki && !player.kiMemory.includes(cardId)) {
+        player.kiMemory.push(cardId);
+      }
+    }
+    return { ...state, player: [...players] };
+  });
+
+  public removeMemory = this.updater((state, cardId: number) => {
+    const players = state.player;
+    for (const player of players) {
+      if (player.ki) {
+        player.kiMemory = player.kiMemory.filter((index) => index !== cardId);
+        console.log('new Memory ', JSON.stringify(player.kiMemory));
+      }
+    }
+    return { ...state, player: [...players] };
+  });
+
   public pictureListS = this.selectSignal((state) => {
     return state.pictureList;
   });
@@ -201,14 +222,25 @@ export class MemoryStore extends ComponentStore<MemoryState> {
   });
 
   public playKiTurn(): void {
+    console.log(JSON.stringify(this.playerS()[0].kiMemory));
     let firstCard = Math.floor(Math.random() * this.cardsS().length);
+    //TODO Nicht gemerkte Karte aufdecken...(später einstellbar?)
     while (this.cardsS()[firstCard].open) {
       firstCard = Math.floor(Math.random() * this.cardsS().length);
-    }
+    } //TODO wenn erste karte aufgedeckt ist gleich mitrechnen...
     let secondCard = Math.floor(Math.random() * this.cardsS().length);
     while (firstCard === secondCard || this.cardsS()[secondCard].open) {
       secondCard = Math.floor(Math.random() * this.cardsS().length);
     }
+    for (const cardId of this.playerS()[this.actualPlayerIdS()].kiMemory) {
+      if (cardId % 2 !== 0 && this.playerS()[this.actualPlayerIdS()].kiMemory.includes(cardId - 1)) {
+        console.log('AHA: ' + cardId, cardId - 1);
+        firstCard = cardId;
+        secondCard = cardId - 1;
+      }
+    }
+    this.addMemory(firstCard);
+    this.addMemory(secondCard);
     this.setCardSignal({ cardId: firstCard, signal: 'open' });
     const secondCheck$ = this.intervalTimer.subscribe(() => {
       if (this.turnAllowedS()) {
@@ -244,7 +276,14 @@ export class MemoryStore extends ComponentStore<MemoryState> {
     const colors: string[] = ['red', 'green', 'blue', 'yellow'];
     shuffleArray(colors);
     for (let index = 0; index < playerAmount; index++) {
-      player.push({ name: 'Spieler ' + (index + 1), id: index, color: colors[index], ki: false, points: 0 });
+      player.push({
+        name: 'Spieler ' + (index + 1),
+        id: index,
+        color: colors[index],
+        ki: false,
+        points: 0,
+        kiMemory: [],
+      });
     }
     return player;
   }
@@ -254,7 +293,14 @@ export class MemoryStore extends ComponentStore<MemoryState> {
     const colors: string[] = ['cyan', 'purple', 'white', 'orange'];
     shuffleArray(colors);
     for (let index = 0; index < kiAmount; index++) {
-      ki.push({ name: 'KI ' + (index + 1), id: index + playerCount, color: colors[index], ki: true, points: 0 });
+      ki.push({
+        name: 'KI ' + (index + 1),
+        id: index + playerCount,
+        color: colors[index],
+        ki: true,
+        points: 0,
+        kiMemory: [],
+      });
     }
     return ki;
   }

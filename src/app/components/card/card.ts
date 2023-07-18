@@ -118,6 +118,8 @@ export class CardComponent {
                   cardId: this.cardId,
                   newPosition: this.store.cardsS()[this.cardId - 1].position,
                 });
+                this.store.removeMemory(this.cardId);
+                this.store.removeMemory(this.cardId - 1);
                 this.store.addPoint(this.store.actualPlayerIdS());
                 if (this.store.playAgainModeS()) {
                   nextPlayer = false;
@@ -132,6 +134,8 @@ export class CardComponent {
                   cardId: this.cardId,
                   newPosition: this.store.cardsS()[this.cardId + 1].position,
                 });
+                this.store.removeMemory(this.cardId);
+                this.store.removeMemory(this.cardId + 1);
                 this.store.addPoint(this.store.actualPlayerIdS());
                 if (this.store.playAgainModeS()) {
                   nextPlayer = false;
