@@ -2,7 +2,6 @@
   [ngClass]="disabled ? 'cursor-not-allowed brightness-75' : 'cursor-pointer' "
   class="flex overflow-hidden cursor-pointer select-none w-fit">
   <div class="flex items-center px-1" (click)="onToggle()">
-    <!-- class="self-center w-5 h-5 m-1 rounded-md outline-none cursor-pointer accent-primary" -->
     <div *ngIf="checked" class="absolute h-6 w-6 animate-fadeIn">
       <global-icon icon="octCheck" color="primary" strokeWidth="2">
       </global-icon>

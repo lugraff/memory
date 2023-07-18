@@ -66,6 +66,9 @@ export class MemoryGameComponent implements OnDestroy {
   //TODO Backboard(Background)
 
   onStartGame() {
+    if (this.inputKiCount + this.inputPlayerCount <= 0) {
+      return;
+    }
     if (this.machineInfo.isMobile) {
       setFullScreen(true);
     }

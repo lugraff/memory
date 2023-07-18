@@ -353,7 +353,7 @@ export class MemoryStore extends ComponentStore<MemoryState> {
   startOutroAnimation(): void {
     this.setCircleStatus('gameFinish');
     this.setCirclePos({ x: innerWidth * 0.5, y: innerHeight * 0.5 });
-    this.setCircleScale(2);
+    this.setCircleScale(1.75);
     setTimeout(() => {
       for (const card of this.cardsS()) {
         this.setCardPosition({
