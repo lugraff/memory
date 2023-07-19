@@ -41,7 +41,7 @@ export class MemoryStore extends ComponentStore<MemoryState> {
       turnAllowed: true,
       playAgainMode: false,
       circleStatus: '',
-      circlePos: { x: innerWidth * 0.5, y: innerHeight * 0.5 },
+      circlePos: { x: innerWidth * 0.5 - 128, y: innerHeight * 0.5 - 128 },
       circleScale: 1.5,
       actualPlayerId: 0,
       lastZ: 1,
@@ -149,7 +149,6 @@ export class MemoryStore extends ComponentStore<MemoryState> {
     for (const player of players) {
       if (player.ki) {
         player.kiMemory = player.kiMemory.filter((index) => index !== cardId);
-        console.log('new Memory ', JSON.stringify(player.kiMemory));
       }
     }
     return { ...state, player: [...players] };
@@ -222,24 +221,46 @@ export class MemoryStore extends ComponentStore<MemoryState> {
   });
 
   public playKiTurn(): void {
-    console.log(JSON.stringify(this.playerS()[0].kiMemory));
+    // console.log(JSON.stringify(this.playerS()[1].kiMemory));
     let firstCard = Math.floor(Math.random() * this.cardsS().length);
-    //TODO Nicht gemerkte Karte aufdecken...(später einstellbar?)
-    while (this.cardsS()[firstCard].open) {
+    let trys = 32;
+    while (
+      (this.cardsS()[firstCard].open || this.playerS()[this.actualPlayerIdS()].kiMemory.includes(firstCard)) &&
+      trys-- >= 0
+    ) {
       firstCard = Math.floor(Math.random() * this.cardsS().length);
-    } //TODO wenn erste karte aufgedeckt ist gleich mitrechnen...
-    let secondCard = Math.floor(Math.random() * this.cardsS().length);
-    while (firstCard === secondCard || this.cardsS()[secondCard].open) {
-      secondCard = Math.floor(Math.random() * this.cardsS().length);
-    }
-    for (const cardId of this.playerS()[this.actualPlayerIdS()].kiMemory) {
-      if (cardId % 2 !== 0 && this.playerS()[this.actualPlayerIdS()].kiMemory.includes(cardId - 1)) {
-        console.log('AHA: ' + cardId, cardId - 1);
-        firstCard = cardId;
-        secondCard = cardId - 1;
-      }
     }
     this.addMemory(firstCard);
+    let secondCard = Math.floor(Math.random() * this.cardsS().length);
+    let foundCards = false;
+    for (const cardId of this.playerS()[this.actualPlayerIdS()].kiMemory) {
+      if (cardId % 2 !== 0) {
+        if (this.playerS()[this.actualPlayerIdS()].kiMemory.includes(cardId - 1)) {
+          firstCard = cardId;
+          secondCard = cardId - 1;
+          foundCards = true;
+          break;
+        }
+      } else {
+        if (this.playerS()[this.actualPlayerIdS()].kiMemory.includes(cardId + 1)) {
+          firstCard = cardId;
+          secondCard = cardId + 1;
+          foundCards = true;
+          break;
+        }
+      }
+    }
+    if (!foundCards) {
+      trys = 32;
+      while (
+        (firstCard === secondCard ||
+          this.cardsS()[secondCard].open ||
+          this.playerS()[this.actualPlayerIdS()].kiMemory.includes(secondCard)) &&
+        trys-- >= 0
+      ) {
+        secondCard = Math.floor(Math.random() * this.cardsS().length);
+      }
+    }
     this.addMemory(secondCard);
     this.setCardSignal({ cardId: firstCard, signal: 'open' });
     const secondCheck$ = this.intervalTimer.subscribe(() => {
@@ -398,7 +419,7 @@ export class MemoryStore extends ComponentStore<MemoryState> {
 
   startOutroAnimation(): void {
     this.setCircleStatus('gameFinish');
-    this.setCirclePos({ x: innerWidth * 0.5, y: innerHeight * 0.5 });
+    this.setCirclePos({ x: 0, y: 0 });
     this.setCircleScale(1.75);
     setTimeout(() => {
       for (const card of this.cardsS()) {

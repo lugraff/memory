@@ -34,25 +34,24 @@
     <button standard [disabled]="inputPlayerCount+inputKiCount <= 0" (click)="onStartGame()">Spiel starten</button>
   </div>
 </div>
-
 <ng-container *ngIf="store.statusS() === 'playing'">
   <ng-container *ngFor="let card of store.cardsS()">
     <app-card [cardId]="card.id" [id]="'card_'+card.id"></app-card>
   </ng-container>
   <div (click)="onResetGame()" [class.pointer-events-none]="store.circleStatusS() !== 'gameFinish'"
-    [class.origin-top-left]="store.circleStatusS() === 'gameFinish' || store.circleStatusS() === 'intro'"
-    class="absolute -translate-x-[50%] -translate-y-[50%] select-none z-[9999] duration-300 ease-in-out"
+    class="absolute select-none z-[9999] duration-300 ease-in-out"
     [ngClass]="store.circleStatusS() === 'scale-x-0'?'scale-x-0 scale-y-110':''"
-    [ngStyle]="{left:store.circlePosS().x+'px',top:store.circlePosS().y+'px', scale:store.circleScaleS()}">
+    [ngStyle]="{left:store.circlePosS().x+'px',top:store.circlePosS().y+'px'}">
     <div [ngStyle]="{borderColor:store.playerS()[store.actualPlayerIdS()].color}"
-      class="w-64 h-64 rounded-full shadow-md shadow-black backdrop-brightness-[0.33] border-4 p-1 grid text-center font-semibold overflow-hidden animate-zoomIn">
+      [ngClass]="store.circleStatusS() !== 'gameFinish' ? 'w-[256px] h-[256px] rounded-full border-4' : 'w-screen h-screen'"
+      class="duration-500 shadow-md shadow-black backdrop-brightness-[0.33] p-1 grid text-center font-semibold overflow-hidden animate-zoomIn">
       <ng-container *ngIf="store.circleStatusS() !== 'gameFinish';else finish">
         <div class="text-xl pt-3">Runde {{ store.roundS() }}</div>
         <div class="self-center text-[3rem] text-primary">{{ store.playerS()[store.actualPlayerIdS()].points }}</div>
         <div class="self-end text-xxl pb-3">{{ store.playerS()[store.actualPlayerIdS()].name }}</div>
       </ng-container>
       <ng-template #finish>
-        <div class="text-xs text-warning pt-12 whitespace-pre-wrap">
+        <div class="text-lg text-primary pt-12 whitespace-pre-wrap">
           <div>
             {{inputCardCount}} Karten
           </div>
@@ -60,7 +59,8 @@
             in {{store.roundS()}} Runden aufgedeckt!</div>
         </div>
         <ng-container *ngFor="let player of store.playerS()">
-          <div class="self-center text-sm text-primary">{{player.name}} bekommt {{player.points}} {{player.points === 1
+          <div class="self-center text-xl" [ngStyle]="{color:player.color}">{{player.name}} bekommt
+            {{player.points}} {{player.points === 1
             ? 'Punkt':'Punkte'}}.
           </div>
         </ng-container>

@@ -48,11 +48,11 @@ export class InputCheckboxComponent implements ControlValueAccessor, OnInit {
   }
 
   public onChange: any = () => {
-    // console.log('Checkbox Changed');
+    // 
   };
 
   public onTouched: any = () => {
-    // console.log('Checkbox Touched');
+    // 
   };
 
   public onToggle() {

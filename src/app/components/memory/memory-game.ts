@@ -41,7 +41,7 @@ export class MemoryGameComponent implements OnDestroy {
   }
   @HostListener('window:keydown', ['$event'])
   onKeyDown(event: KeyboardEvent) {
-    console.log(event.code);
+    // console.log(event.code);
     switch (event.code) {
       case 'KeyF':
         toggleFullScreen();
@@ -56,7 +56,7 @@ export class MemoryGameComponent implements OnDestroy {
   //TODO Player Creation (Color, Name)
   //TODO KI Creation (Color, Level)
   //TODO Punkte Vergleichs Anzeige
-  //TODO KI Modes
+  //TODO KI Modes (memory chance 0% - 100%, maximal count -> je mehr karten gemerkt sind desto eher vergisst man eine oder mehr)
   //TODO local StateStore
   //TODO Touch Control multitouch?
   //TODO Musik & SFX
@@ -69,6 +69,7 @@ export class MemoryGameComponent implements OnDestroy {
     if (this.inputKiCount + this.inputPlayerCount <= 0) {
       return;
     }
+    this.store.setCirclePos({ x: innerWidth * 0.5 - 128, y: innerHeight * 0.5 - 128 });
     if (this.machineInfo.isMobile) {
       setFullScreen(true);
     }
@@ -85,7 +86,7 @@ export class MemoryGameComponent implements OnDestroy {
     this.store.resetlastOpenedCardIds();
     this.store.setCircleStatus('intro');
     setTimeout(() => {
-      this.store.setCirclePos({ x: innerWidth - 132, y: innerHeight - 132 });
+      this.store.setCirclePos({ x: innerWidth - 260, y: innerHeight - 260 });
       this.store.setCircleScale(0.5);
       this.store.setCircleStatus('');
       if (this.store.playerS()[this.store.actualPlayerIdS()].ki) {

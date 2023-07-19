@@ -100,6 +100,9 @@ export class CardComponent {
   private openAnimation(): void {
     this.store.setTurnAllowed(false);
     this.animOpenStarted.set(true);
+    if (!this.store.playerS()[this.store.actualPlayerIdS()].ki) {
+      this.store.addMemory(this.cardId);
+    }
     setTimeout(() => {
       this.store.setCardOpenOrClosed({ cardId: this.cardId, openOrClosed: true });
       this.store.addlastOpenedCardIds(this.cardId);
