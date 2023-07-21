@@ -51,19 +51,19 @@ export class MemoryGameComponent implements OnDestroy {
     }
   }
 
-  //TODO Refactoring
-  //TODO Window Resize Response
+  //TODO KI Modes (memory chance 0% - 100%, maximal count -> je mehr karten gemerkt sind desto eher vergisst man eine oder mehr)
+  //TODO Punkte Vergleichs Anzeige
+  //TODO End-Ranking
   //TODO Player Creation (Color, Name)
   //TODO KI Creation (Color, Level)
-  //TODO Punkte Vergleichs Anzeige
-  //TODO KI Modes (memory chance 0% - 100%, maximal count -> je mehr karten gemerkt sind desto eher vergisst man eine oder mehr)
   //TODO local StateStore
+  //TODO Refactoring
+  //TODO Window Resize Response
   //TODO Touch Control multitouch?
   //TODO Musik & SFX
   //TODO Settings (Fullscreen, musik, sfx, )
   //TODO Card-Editor
   //TODO PictureList Importer & UrlLoader
-  //TODO Backboard(Background)
 
   onStartGame() {
     if (this.inputKiCount + this.inputPlayerCount <= 0) {
