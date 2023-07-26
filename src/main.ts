@@ -4,7 +4,8 @@ import { bootstrapApplication } from '@angular/platform-browser';
 import { LimitNumber } from './app/pipes/limit-number.pipe';
 import { Routes, provideRouter } from '@angular/router';
 import { MemoryGameComponent } from './app/components/memory/memory-game';
-import { importProvidersFrom } from '@angular/core';
+import { importProvidersFrom, isDevMode } from '@angular/core';
+import { provideServiceWorker } from '@angular/service-worker';
 
 const ROUTES: Routes = [
   {
@@ -22,5 +23,13 @@ const ROUTES: Routes = [
 ];
 
 bootstrapApplication(AppComponent, {
-  providers: [LimitNumber, provideRouter(ROUTES), importProvidersFrom([HttpClientModule])],
+  providers: [
+    LimitNumber,
+    provideRouter(ROUTES),
+    importProvidersFrom([HttpClientModule]),
+    provideServiceWorker('ngsw-worker.js', {
+      enabled: !isDevMode(),
+      registrationStrategy: 'registerWhenStable:30000',
+    }),
+  ],
 }).catch((err) => console.error(err));
