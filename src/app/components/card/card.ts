@@ -130,8 +130,10 @@ export class CardComponent {
                   nextPlayer = false;
                 }
               } else {
-                this.store.setCardSignal({ cardId: this.store.lastOpenedCardIdsS()[0], signal: 'close' });
-                this.closeAnimation();
+                setTimeout(() => {
+                  this.store.setCardSignal({ cardId: this.store.lastOpenedCardIdsS()[0], signal: 'close' });
+                  this.closeAnimation();
+                }, 2000);
               }
             } else {
               if (this.store.cardsS()[this.cardId + 1].open === true) {
@@ -146,8 +148,10 @@ export class CardComponent {
                   nextPlayer = false;
                 }
               } else {
-                this.store.setCardSignal({ cardId: this.store.lastOpenedCardIdsS()[0], signal: 'close' });
-                this.closeAnimation();
+                setTimeout(() => {
+                  this.store.setCardSignal({ cardId: this.store.lastOpenedCardIdsS()[0], signal: 'close' });
+                  this.closeAnimation();
+                }, 2000);
               }
             }
             for (const card of this.store.cardsS()) {
@@ -181,7 +185,7 @@ export class CardComponent {
         this.store.nextRound();
         // this.storage.setObject('actualGame', this.store.state());
       }, 300);
-    }, 500);
+    }, 2500);
   }
 
   public closeAnimation(): void {
