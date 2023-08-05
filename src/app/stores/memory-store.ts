@@ -34,7 +34,7 @@ export class MemoryStore extends ComponentStore<MemoryState> {
         }, 1000);
       });
     const lastGameState: MemoryState = this.storage.getObject('actualGame');
-    if (lastGameState && lastGameState.cards) {
+    if (lastGameState && lastGameState.cards && lastGameState.status === 'playing') {
       this.lastGameOpenS.set(true);
     }
   }
