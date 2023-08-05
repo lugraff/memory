@@ -1,52 +1,30 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { ComponentStore } from '@ngrx/component-store';
 import { Card, GameSettings, MemoryState, Picture, Player, Vector2 } from '../models/models';
 import { shuffleArray } from '../utils/helper-functions';
 import { LimitNumber } from '../pipes/limit-number.pipe';
 import { MachineInfoService } from '../services/machine-info-service';
-import { Observable, delay, interval, take } from 'rxjs';
+import { Observable, Subscription, interval, take, takeUntil } from 'rxjs';
 import { ConnectorService } from '../services/connector.service';
 import { generate } from '../utils/color-generator';
+import { LocalStorageService } from '../services/local-storage.service';
+import { emptyMemoryState } from '../models/emptyModels';
 
 @Injectable()
 export class MemoryStore extends ComponentStore<MemoryState> {
   private limit = inject(LimitNumber);
   private machine = inject(MachineInfoService);
   private connector = inject(ConnectorService);
-
-  private readonly chipsNames = [
-    'deer.png',
-    'dolphin.png',
-    'eagle.png',
-    'gecko.png',
-    'horse.png',
-    'snail.png',
-    'snake.png',
-    'squirrel.png',
-    'turtle.png',
-  ];
+  private storage = inject(LocalStorageService);
 
   private readonly local = true;
   private loadedCounter = 0;
   private intervalTimer = interval(200);
+  public lastGameOpenS = signal(false);
+  private autoSaveSub = new Subscription();
 
   constructor() {
-    super({
-      cards: [],
-      player: [],
-      round: 0,
-      lastOpenedCardIds: [],
-      startTime: new Date(),
-      status: 'menu',
-      turnAllowed: true,
-      playAgainMode: false,
-      circleStatus: '',
-      circlePos: { x: innerWidth * 0.5 - 128, y: innerHeight * 0.5 - 128 },
-      circleScale: 1.5,
-      actualPlayerId: 0,
-      lastZ: 1,
-      pictureList: [],
-    });
+    super(emptyMemoryState);
     this.loadPictureList()
       .pipe(take(1))
       .subscribe((result) => {
@@ -55,6 +33,48 @@ export class MemoryStore extends ComponentStore<MemoryState> {
           this.loadImages();
         }, 1000);
       });
+    const lastGameState: MemoryState = this.storage.getObject('actualGame');
+    if (lastGameState && lastGameState.cards) {
+      this.lastGameOpenS.set(true);
+    }
+  }
+
+  private activateAutoSave(): void {
+    this.autoSaveSub?.unsubscribe();
+    this.autoSaveSub = this.state$.pipe(takeUntil(this.destroy$)).subscribe((newState) => {
+      if (newState.lastOpenedCardIds && newState.lastOpenedCardIds.length === 2) {
+        return;
+      }
+      this.storage.setObject('actualGame', newState);
+    });
+  }
+
+  public onPlayOn(playOn: boolean): void {
+    if (playOn) {
+      this.reloadLastGame();
+      this.activateAutoSave();
+    } else {
+      this.storage.clearStorage();
+    }
+    this.lastGameOpenS.set(false);
+  }
+
+  private reloadLastGame(): void {
+    const lastGameState: MemoryState = this.storage.getObject('actualGame');
+    if (lastGameState && lastGameState.cards) {
+      this.setState(lastGameState);
+      if (lastGameState.lastOpenedCardIds && lastGameState.lastOpenedCardIds.length >= 2) {
+        lastGameState.lastOpenedCardIds = [];
+      }
+      if (lastGameState.status === 'playing') {
+        lastGameState.turnAllowed = true;
+      }
+      if (lastGameState.status === 'playing' && lastGameState.player[this.actualPlayerIdS()].ki) {
+        setTimeout(() => {
+          this.playKiTurn();
+        }, 1000);
+      }
+    }
   }
 
   private loadPictureList(): Observable<Picture[]> {
@@ -154,6 +174,33 @@ export class MemoryStore extends ComponentStore<MemoryState> {
     return { ...state, player: [...players] };
   });
 
+  public setInputValues = this.updater(
+    (state, prop: { inputPlayerCount: number; inputCardCount: number; inputKiCount: number }) => {
+      return {
+        ...state,
+        inputPlayerCount: prop.inputPlayerCount,
+        inputCardCount: prop.inputCardCount,
+        inputKiCount: prop.inputKiCount,
+      };
+    },
+  );
+
+  public inputCardCountS = this.selectSignal((state) => {
+    return state.inputCardCount;
+  });
+
+  public inputPlayerCountS = this.selectSignal((state) => {
+    return state.inputPlayerCount;
+  });
+
+  public inputKiCountS = this.selectSignal((state) => {
+    return state.inputKiCount;
+  });
+
+  public dateS = this.selectSignal((state) => {
+    return state.startTime;
+  });
+
   public pictureListS = this.selectSignal((state) => {
     return state.pictureList;
   });
@@ -221,19 +268,27 @@ export class MemoryStore extends ComponentStore<MemoryState> {
   });
 
   public playKiTurn(): void {
-    // console.log(JSON.stringify(this.playerS()[1].kiMemory));
+    console.log(JSON.stringify(this.playerS()[1].kiMemory));
     let firstCard = Math.floor(Math.random() * this.cardsS().length);
     let trys = 32;
+    console.log('A');
+
     while (
       (this.cardsS()[firstCard].open || this.playerS()[this.actualPlayerIdS()].kiMemory.includes(firstCard)) &&
       trys-- >= 0
     ) {
+      console.log('B');
+
       firstCard = Math.floor(Math.random() * this.cardsS().length);
     }
+    console.log('C');
+
     this.addMemory(firstCard);
     let secondCard = Math.floor(Math.random() * this.cardsS().length);
     let foundCards = false;
     for (const cardId of this.playerS()[this.actualPlayerIdS()].kiMemory) {
+      console.log('D');
+
       if (cardId % 2 !== 0) {
         if (this.playerS()[this.actualPlayerIdS()].kiMemory.includes(cardId - 1)) {
           firstCard = cardId;
@@ -250,6 +305,7 @@ export class MemoryStore extends ComponentStore<MemoryState> {
         }
       }
     }
+    console.log('E');
     if (!foundCards) {
       trys = 32;
       while (
@@ -262,9 +318,12 @@ export class MemoryStore extends ComponentStore<MemoryState> {
       }
     }
     this.addMemory(secondCard);
+    console.log('F');
     this.setCardSignal({ cardId: firstCard, signal: 'open' });
     const secondCheck$ = this.intervalTimer.subscribe(() => {
+      console.log('G');
       if (this.turnAllowedS()) {
+        console.log('H');
         this.setCardSignal({ cardId: secondCard, signal: 'open' });
         secondCheck$.unsubscribe();
       }
@@ -282,6 +341,7 @@ export class MemoryStore extends ComponentStore<MemoryState> {
   });
 
   public generateNewGame = this.updater((state, gameSettings: GameSettings) => {
+    this.activateAutoSave();
     const cards = this.generateCards(gameSettings.cardAmount, gameSettings.boardSize);
     const startTime = new Date();
     const status = 'playing';
@@ -418,6 +478,7 @@ export class MemoryStore extends ComponentStore<MemoryState> {
   }
 
   startOutroAnimation(): void {
+    this.resetlastOpenedCardIds();
     this.setCircleStatus('gameFinish');
     this.setCirclePos({ x: 0, y: 0 });
     this.setCircleScale(1.75);

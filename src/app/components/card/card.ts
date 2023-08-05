@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { emptyVector2 } from 'src/app/models/emptyModels';
 import { Vector2 } from 'src/app/models/models';
 import { LimitNumber } from 'src/app/pipes/limit-number.pipe';
+import { LocalStorageService } from 'src/app/services/local-storage.service';
 import { MachineInfoService } from 'src/app/services/machine-info-service';
 import { PointerEventService } from 'src/app/services/pointer-events-service';
 import { MemoryStore } from 'src/app/stores/memory-store';
@@ -22,6 +23,7 @@ export class CardComponent {
   private limit = inject(LimitNumber);
   private detector = inject(ChangeDetectorRef);
   private machine = inject(MachineInfoService);
+  private storage = inject(LocalStorageService);
 
   @Input() public cardId = -1;
 
@@ -156,6 +158,10 @@ export class CardComponent {
             }
             this.store.startOutroAnimation();
           }, 300);
+        } else {
+          if (!this.store.playerS()[this.store.actualPlayerIdS()].ki) {
+            // this.storage.setObject('actualGame', this.store.state());
+          }
         }
       }, 300);
     }, 300);
@@ -173,6 +179,7 @@ export class CardComponent {
           this.store.nextPlayer();
         }
         this.store.nextRound();
+        // this.storage.setObject('actualGame', this.store.state());
       }, 300);
     }, 500);
   }

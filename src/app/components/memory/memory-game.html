@@ -22,14 +22,15 @@
     <div class="header p-3">Memory</div>
     <hr>
     <global-input-number inputType="number" inputFieldWidth="4rem" [disabled]="true" [step]="2"
-      [max]="store.pictureListS().length*2" [min]="4" [(ngModel)]="inputCardCount">Karten:</global-input-number>
+      [max]="store.pictureListS().length*2" [min]="4" [(ngModel)]="inputCardCount"
+      (ngModelChange)="inputChanged()">Karten:</global-input-number>
     <global-input-number inputType="number" inputFieldWidth="4rem" [disabled]="true" [step]="1" [max]="4" [min]="0"
-      [(ngModel)]="inputPlayerCount">Spieler:</global-input-number>
+      [(ngModel)]="inputPlayerCount" (ngModelChange)="inputChanged()">Spieler:</global-input-number>
     <global-input-number inputType="number" inputFieldWidth="4rem" [disabled]="true" [step]="1" [max]="4" [min]="0"
-      [(ngModel)]="inputKiCount">KI
+      [(ngModel)]="inputKiCount" (ngModelChange)="inputChanged()">KI
       Spieler:</global-input-number>
-    <global-input-checkbox [checked]="store.playAgainModeS()"
-      (whenChanged)="onCheckBoxChange($event)">Zieh-Nochmal-Modus</global-input-checkbox>
+    <global-input-checkbox [checked]="store.playAgainModeS()" (whenChanged)="onCheckBoxChange($event)"
+      (ngModelChange)="inputChanged()">Zieh-Nochmal-Modus</global-input-checkbox>
     <hr>
     <button standard [disabled]="inputPlayerCount+inputKiCount <= 0" (click)="onStartGame()">Spiel starten</button>
   </div>
@@ -69,3 +70,13 @@
     </div>
   </div>
 </ng-container>
+<div *ngIf="store.lastGameOpenS()"
+  class="w-screen h-screen fixed left-0 top-0 backdrop-brightness-50 backdrop-blur-sm grid justify-center items-center z-50">
+  <div class="text-xxl bg-bgA p-4 rounded">
+    <div>Weiterspielen?</div>
+    <div class="flex w-full gap-2 justify-around pt-4">
+      <button standard class="w-20" (click)="store.onPlayOn(true)">Ja</button>
+      <button standard class="w-20" (click)="store.onPlayOn(false)">Nein</button>
+    </div>
+  </div>
+</div>

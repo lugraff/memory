@@ -13,6 +13,9 @@ export interface MemoryState {
   startTime: Date;
   lastZ: number;
   pictureList: Picture[];
+  inputCardCount: number;
+  inputPlayerCount: number;
+  inputKiCount: number;
 }
 
 export interface Card {

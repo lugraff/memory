@@ -31,9 +31,9 @@ export class MemoryGameComponent implements OnDestroy {
   public machineInfo = inject(MachineInfoService);
   private destroy$ = new ReplaySubject<boolean>(1);
 
-  public inputCardCount = 18;
-  public inputPlayerCount = 1;
-  public inputKiCount = 0;
+  public inputCardCount = this.store.inputCardCountS();
+  public inputPlayerCount = this.store.inputPlayerCountS();
+  public inputKiCount = this.store.inputKiCountS();
 
   @HostListener('contextmenu', ['$event'])
   onRightClick(event: MouseEvent) {
@@ -51,6 +51,9 @@ export class MemoryGameComponent implements OnDestroy {
     }
   }
 
+  //TODO alles in storage schreiben -> inputValues,...
+
+  //TODO Karten verschieben als option
   //TODO KI Modes (memory chance 0% - 100%, maximal count -> je mehr karten gemerkt sind desto eher vergisst man eine oder mehr)
   //TODO Punkte Vergleichs Anzeige
   //TODO End-Ranking
@@ -83,7 +86,6 @@ export class MemoryGameComponent implements OnDestroy {
   }
 
   private introAnimation(): void {
-    this.store.resetlastOpenedCardIds();
     this.store.setCircleStatus('intro');
     setTimeout(() => {
       this.store.setCirclePos({ x: innerWidth - 260, y: innerHeight - 260 });
@@ -105,6 +107,14 @@ export class MemoryGameComponent implements OnDestroy {
       this.store.setStatus('menu');
       setFullScreen(false);
     }
+  }
+
+  public inputChanged(): void {
+    this.store.setInputValues({
+      inputCardCount: this.inputCardCount,
+      inputPlayerCount: this.inputPlayerCount,
+      inputKiCount: this.inputKiCount,
+    });
   }
 
   ngOnDestroy(): void {
