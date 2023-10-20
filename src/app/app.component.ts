@@ -1,15 +1,15 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { RouterModule } from '@angular/router';
 import { MachineInfoService } from './services/machine-info-service';
+import { MemoryGameComponent } from './components/memory/memory-game';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterModule],
+  imports: [MemoryGameComponent],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `<div class="w-screen h-screen from-bgA to-bgB bg-gradient-to-t flex text-white selection:bg-selection">
     <div class="grow w-full h-full">
-      <router-outlet></router-outlet>
+      <app-memory-game></app-memory-game>
     </div>
   </div>`,
 })
